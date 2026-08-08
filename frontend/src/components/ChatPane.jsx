@@ -39,7 +39,7 @@ const CopyButton = ({ text, testid, align = "left" }) => {
     <button
       data-testid={testid}
       onClick={onCopy}
-      className={`mt-1.5 flex items-center gap-1 text-[11px] text-[#52525B] hover:text-[#EDEDED] ${
+      className={`mt-1.5 flex items-center gap-1 text-[11px] text-[#A1A1AA] hover:text-[#EDEDED] ${
         align === "right" ? "ml-auto" : ""
       }`}
       style={{ transition: "color 0.15s ease" }}
