@@ -1,13 +1,14 @@
 import os
 import json
 import hmac
+import time
 from pathlib import Path
-from typing import List, Any, Optional
+from typing import List, Any, Optional, Dict
 from datetime import datetime, timezone, timedelta
 
 import jwt
 import httpx
-from fastapi import FastAPI, APIRouter, Header, HTTPException
+from fastapi import FastAPI, APIRouter, Header, HTTPException, Request
 from fastapi.responses import StreamingResponse, JSONResponse
 from dotenv import load_dotenv
 from starlette.middleware.cors import CORSMiddleware
@@ -51,6 +52,40 @@ def require_gate(authorization: Optional[str]):
         token = authorization[7:]
     if not token or not verify_gate_token(token):
         raise HTTPException(status_code=401, detail="Locked. Enter the app password.")
+
+
+# --- Brute-force throttle for the verify endpoint (in-memory, per IP) ---
+RATE_MAX = 5          # failed attempts before lockout
+RATE_WINDOW = 900     # 15 minutes
+_verify_attempts: Dict[str, dict] = {}
+
+
+def _client_ip(request: Request) -> str:
+    fwd = request.headers.get("x-forwarded-for", "")
+    if fwd:
+        return fwd.split(",")[0].strip()
+    return request.client.host if request.client else "unknown"
+
+
+def check_rate(ip: str):
+    rec = _verify_attempts.get(ip)
+    if rec and rec.get("lock_until", 0) > time.time():
+        raise HTTPException(status_code=429, detail="Too many attempts. Try again in a few minutes.")
+
+
+def record_fail(ip: str):
+    now = time.time()
+    rec = _verify_attempts.get(ip)
+    if not rec or now - rec.get("first", now) > RATE_WINDOW:
+        rec = {"count": 0, "first": now}
+    rec["count"] += 1
+    if rec["count"] >= RATE_MAX:
+        rec["lock_until"] = now + RATE_WINDOW
+    _verify_attempts[ip] = rec
+
+
+def record_success(ip: str):
+    _verify_attempts.pop(ip, None)
 
 
 # System prompts by tone (fully locked / not user-editable). Assistant replies in Sinhala.
@@ -135,12 +170,15 @@ async def auth_status():
 
 
 @api_router.post("/auth/verify")
-async def auth_verify(req: VerifyRequest):
+async def auth_verify(req: VerifyRequest, request: Request):
     if not APP_PASSWORD:
         return {"token": create_gate_token(), "gate_enabled": False}
-    # constant-time compare to avoid timing leaks
-    if hmac.compare_digest(req.password, APP_PASSWORD):
+    ip = _client_ip(request)
+    check_rate(ip)  # 429 if locked out
+    if hmac.compare_digest(req.password.encode("utf-8"), APP_PASSWORD.encode("utf-8")):
+        record_success(ip)
         return {"token": create_gate_token(), "gate_enabled": True}
+    record_fail(ip)
     raise HTTPException(status_code=401, detail="Incorrect password")
 
 

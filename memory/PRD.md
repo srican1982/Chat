@@ -1,3 +1,11 @@
+# UPDATE 2026-08-08 (latest)
+- 5 Sinhala tones (Fun & Casual default, Casual, Professional, Story, Comedy); locked prompts server-side; temp 0.9; Noto Sans Sinhala.
+- Copy button on every message; last-message-behind-composer fixed (spacer + click-through gradient).
+- Storage: video frames in-memory only, thumbnail persisted; usage vs 5 MB, warn > 4 MB; quota handled.
+- Mobile: single-Sidebar via matchMedia (no duplicate testids), hamburger in sticky header, no overflow.
+- Password GATE (server-enforced): APP_PASSWORD env; POST /api/auth/verify -> 30-day JWT; /api/chat/stream needs Bearer token (401 else); GET /api/auth/status; brute-force throttle 5/IP -> 15-min 429. LockScreen + token in localStorage; 401 re-locks. Verified backend 17/17 + mobile/desktop 100%. Password: 2003265.
+
+
 # AI Roleplay Chat — Browser-Only, Privacy-First
 
 ## Original Problem Statement
