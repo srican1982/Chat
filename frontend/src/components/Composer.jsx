@@ -61,8 +61,8 @@ export const Composer = ({ onSend, disabled, tone }) => {
   const accent = (TONES.find((t) => t.id === tone) || TONES[0]).color;
 
   return (
-    <div className="absolute bottom-0 left-0 right-0 p-4 md:p-8 bg-gradient-to-t from-[#0A0A0B] via-[#0A0A0B]/90 to-transparent">
-      <div className="max-w-3xl mx-auto">
+    <div className="absolute bottom-0 left-0 right-0 p-4 md:p-8 bg-gradient-to-t from-[#0A0A0B] via-[#0A0A0B]/90 to-transparent pointer-events-none">
+      <div className="max-w-3xl mx-auto pointer-events-auto">
         <div className="bg-[#1A1A1D] border border-white/10 shadow-2xl rounded-3xl p-3">
           {attachments.length > 0 && (
             <div data-testid="attachment-tray" className="flex gap-2 overflow-x-auto px-1 pb-2 mb-1">

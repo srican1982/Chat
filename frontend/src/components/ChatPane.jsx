@@ -39,10 +39,10 @@ const CopyButton = ({ text, testid, align = "left" }) => {
     <button
       data-testid={testid}
       onClick={onCopy}
-      className={`mt-1.5 flex items-center gap-1 text-[11px] text-[#52525B] hover:text-[#EDEDED] opacity-0 group-hover:opacity-100 ${
+      className={`mt-1.5 flex items-center gap-1 text-[11px] text-[#52525B] hover:text-[#EDEDED] ${
         align === "right" ? "ml-auto" : ""
       }`}
-      style={{ transition: "opacity 0.15s ease, color 0.15s ease" }}
+      style={{ transition: "color 0.15s ease" }}
     >
       {copied ? <Check className="w-3 h-3 text-[#00E676]" /> : <Copy className="w-3 h-3" />}
       {copied ? "Copied" : "Copy"}
@@ -88,7 +88,7 @@ export const ChatPane = ({ session, streaming, streamText }) => {
   }
 
   return (
-    <div data-testid="chat-container" className="flex-1 overflow-y-auto p-4 md:p-8 pb-56 scroll-smooth">
+    <div data-testid="chat-container" className="flex-1 overflow-y-auto p-4 md:p-8 scroll-smooth">
       <div className="max-w-3xl mx-auto flex flex-col gap-8">
         {messages.map((m) => (
           <motion.div
@@ -129,6 +129,7 @@ export const ChatPane = ({ session, streaming, streamText }) => {
             </div>
           </div>
         )}
+        <div className="h-48 shrink-0" />
         <div ref={bottomRef} />
       </div>
     </div>
