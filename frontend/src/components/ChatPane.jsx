@@ -1,6 +1,7 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
-import { Lock, Sparkles, ImageIcon } from "lucide-react";
+import { Lock, Sparkles, ImageIcon, Copy, Check } from "lucide-react";
+import { toast } from "sonner";
 import { TONES } from "@/lib/constants";
 
 const AttachmentThumbs = ({ attachments }) => {
@@ -22,11 +23,38 @@ const AttachmentThumbs = ({ attachments }) => {
   );
 };
 
+const CopyButton = ({ text, testid, align = "left" }) => {
+  const [copied, setCopied] = useState(false);
+  const onCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(text || "");
+      setCopied(true);
+      toast.success("Copied to clipboard");
+      setTimeout(() => setCopied(false), 1500);
+    } catch {
+      toast.error("Could not copy");
+    }
+  };
+  return (
+    <button
+      data-testid={testid}
+      onClick={onCopy}
+      className={`mt-1.5 flex items-center gap-1 text-[11px] text-[#52525B] hover:text-[#EDEDED] opacity-0 group-hover:opacity-100 ${
+        align === "right" ? "ml-auto" : ""
+      }`}
+      style={{ transition: "opacity 0.15s ease, color 0.15s ease" }}
+    >
+      {copied ? <Check className="w-3 h-3 text-[#00E676]" /> : <Copy className="w-3 h-3" />}
+      {copied ? "Copied" : "Copy"}
+    </button>
+  );
+};
+
 export const ChatPane = ({ session, streaming, streamText }) => {
   const bottomRef = useRef(null);
 
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+    bottomRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
   }, [session?.messages?.length, streamText]);
 
   const messages = session?.messages || [];
@@ -60,7 +88,7 @@ export const ChatPane = ({ session, streaming, streamText }) => {
   }
 
   return (
-    <div data-testid="chat-container" className="flex-1 overflow-y-auto p-4 md:p-8 pb-44 scroll-smooth">
+    <div data-testid="chat-container" className="flex-1 overflow-y-auto p-4 md:p-8 pb-56 scroll-smooth">
       <div className="max-w-3xl mx-auto flex flex-col gap-8">
         {messages.map((m) => (
           <motion.div
@@ -69,17 +97,24 @@ export const ChatPane = ({ session, streaming, streamText }) => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.25 }}
             data-testid={`message-${m.role}`}
-            className={m.role === "user" ? "flex justify-end" : "flex justify-start"}
+            className={`group flex flex-col ${m.role === "user" ? "items-end" : "items-start"}`}
           >
             {m.role === "user" ? (
               <div className="bg-white/5 rounded-2xl rounded-tr-sm px-5 py-4 max-w-[85%]">
-          <p className="whitespace-pre-wrap text-[#EDEDED] sinhala-text">{m.text}</p>
+                {m.text && <p className="whitespace-pre-wrap text-[#EDEDED] sinhala-text">{m.text}</p>}
                 <AttachmentThumbs attachments={m.attachments} />
               </div>
             ) : (
               <div className="border-l-2 border-[#52525B] pl-4 py-1 max-w-[95%]">
                 <p className="whitespace-pre-wrap text-[#EDEDED] sinhala-text">{m.text}</p>
               </div>
+            )}
+            {m.text && (
+              <CopyButton
+                text={m.text}
+                testid={`copy-${m.role}-${m.id}`}
+                align={m.role === "user" ? "right" : "left"}
+              />
             )}
           </motion.div>
         ))}
