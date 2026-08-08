@@ -2,7 +2,7 @@ import React, { useRef } from "react";
 import { Plus, MessageSquare, Trash2, Pencil, Shield, Download, Upload, Eraser, Lock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { STORAGE_WARN_BYTES } from "@/lib/constants";
+import { STORAGE_WARN_BYTES, STORAGE_LIMIT_BYTES } from "@/lib/constants";
 import {
   AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
   AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger,
@@ -13,7 +13,7 @@ export const Sidebar = ({
   onNew, onSwitch, onRename, onDelete, onClearAll, onExport, onImport, onOpenPrivacy,
 }) => {
   const importRef = useRef(null);
-  const pct = Math.min(100, (storageBytes / STORAGE_WARN_BYTES) * 100);
+  const pct = Math.min(100, (storageBytes / STORAGE_LIMIT_BYTES) * 100);
   const mb = (storageBytes / (1024 * 1024)).toFixed(2);
   const over = storageBytes > STORAGE_WARN_BYTES;
 

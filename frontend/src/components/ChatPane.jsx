@@ -129,7 +129,7 @@ export const ChatPane = ({ session, streaming, streamText }) => {
             </div>
           </div>
         )}
-        <div className="h-48 shrink-0" />
+        <div className="h-56 sm:h-48 shrink-0" />
         <div ref={bottomRef} />
       </div>
     </div>

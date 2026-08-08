@@ -1,28 +1,36 @@
 import React from "react";
-import { Lock, Eraser } from "lucide-react";
+import { Lock, Eraser, Menu } from "lucide-react";
 import { MODELS, TONES } from "@/lib/constants";
 import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 
-export const ChatHeader = ({ tone, model, onToneChange, onModelChange, onClearSession }) => {
+export const ChatHeader = ({ tone, model, onToneChange, onModelChange, onClearSession, onMenu }) => {
   const toneObj = TONES.find((t) => t.id === tone) || TONES[0];
 
   return (
     <header
       data-testid="chat-header"
-      className="sticky top-0 z-40 flex items-center gap-3 px-4 md:px-8 py-3 bg-[#0A0A0B]/80 backdrop-blur-2xl border-b border-white/5"
+      className="sticky top-0 z-40 flex items-center gap-2 sm:gap-3 px-3 sm:px-8 py-3 bg-[#0A0A0B]/80 backdrop-blur-2xl border-b border-white/5"
     >
-      <div className="flex items-center gap-1.5 text-xs text-[#00E676] font-mono mr-1">
+      <button
+        data-testid="mobile-menu-btn"
+        onClick={onMenu}
+        className="md:hidden flex-shrink-0 text-[#A1A1AA] hover:text-[#EDEDED] -ml-1 p-1"
+      >
+        <Menu className="w-5 h-5" />
+      </button>
+
+      <div className="hidden sm:flex items-center gap-1.5 text-xs text-[#00E676] font-mono mr-1">
         <Lock className="w-3.5 h-3.5" />
-        <span className="hidden sm:inline">Local Only</span>
+        <span>Local Only</span>
       </div>
 
       <Select value={tone} onValueChange={onToneChange}>
         <SelectTrigger
           data-testid="tone-selector"
-          className="w-[150px] bg-white/5 text-[#EDEDED] rounded-xl"
+          className="w-[118px] sm:w-[150px] flex-shrink-0 bg-white/5 text-[#EDEDED] rounded-xl text-sm"
           style={{ borderColor: toneObj.color + "80" }}
         >
           <SelectValue />
@@ -40,10 +48,10 @@ export const ChatHeader = ({ tone, model, onToneChange, onModelChange, onClearSe
       </Select>
 
       <Select value={model} onValueChange={onModelChange}>
-        <SelectTrigger data-testid="model-selector" className="flex-1 max-w-[280px] bg-white/5 border-white/10 text-[#EDEDED] rounded-xl">
+        <SelectTrigger data-testid="model-selector" className="flex-1 min-w-0 sm:max-w-[280px] bg-white/5 border-white/10 text-[#EDEDED] rounded-xl text-sm">
           <SelectValue />
         </SelectTrigger>
-        <SelectContent className="bg-[#1A1A1D] border-white/10 max-w-[340px]">
+        <SelectContent className="bg-[#1A1A1D] border-white/10 max-w-[320px]">
           {MODELS.map((m) => (
             <SelectItem key={m.id} value={m.id} data-testid={`model-option-${m.id}`}>
               <div className="flex flex-col items-start">
@@ -55,16 +63,16 @@ export const ChatHeader = ({ tone, model, onToneChange, onModelChange, onClearSe
         </SelectContent>
       </Select>
 
-      <div className="flex-1" />
+      <div className="hidden sm:block flex-1" />
 
       <Button
         data-testid="clear-session-btn"
         onClick={onClearSession}
         variant="ghost"
-        size="sm"
-        className="gap-1.5 text-xs text-[#A1A1AA] hover:text-[#FF3B30] hover:bg-[#FF3B30]/10"
+        size="icon"
+        className="flex-shrink-0 sm:w-auto sm:px-3 gap-1.5 text-xs text-[#A1A1AA] hover:text-[#FF3B30] hover:bg-[#FF3B30]/10"
       >
-        <Eraser className="w-3.5 h-3.5" /> <span className="hidden sm:inline">Clear session</span>
+        <Eraser className="w-4 h-4" /> <span className="hidden sm:inline">Clear session</span>
       </Button>
     </header>
   );

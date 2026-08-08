@@ -115,7 +115,7 @@ export const Composer = ({ onSend, disabled, tone }) => {
               onKeyDown={onKeyDown}
               placeholder="Write your scene…"
               rows={1}
-              className="flex-1 resize-none border-0 bg-transparent focus-visible:ring-0 text-[#EDEDED] placeholder:text-[#52525B] py-2 max-h-[200px] leading-relaxed"
+              className="flex-1 resize-none border-0 bg-transparent focus-visible:ring-0 text-[#EDEDED] placeholder:text-[#52525B] py-2 max-h-[200px] leading-relaxed text-base"
             />
 
             <Button

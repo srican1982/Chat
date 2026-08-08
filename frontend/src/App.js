@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import "@/App.css";
-import { Menu } from "lucide-react";
 import { Toaster } from "@/components/ui/sonner";
 import { toast } from "sonner";
 import { Sidebar } from "@/components/Sidebar";
@@ -62,9 +61,9 @@ function App() {
       setStorageBytes(bytes);
       if (bytes > STORAGE_WARN_BYTES && !warnedRef.current) {
         warnedRef.current = true;
-        toast.error("Local storage is over 3.5 MB", {
-          description: "Consider exporting a backup and clearing old sessions.",
-          duration: 8000,
+        toast.error("Local storage over 4 MB — approaching the ~5 MB browser limit", {
+          description: "Export a backup and clear old sessions. Tip: video frames aren't saved (only a thumbnail), so history stays light.",
+          duration: 9000,
         });
       }
       if (bytes <= STORAGE_WARN_BYTES) warnedRef.current = false;
@@ -251,24 +250,14 @@ function App() {
       )}
 
       <main className="flex-1 flex flex-col h-screen relative bg-[#0A0A0B]">
-        <div className="flex items-center">
-          <button
-            data-testid="mobile-menu-btn"
-            onClick={() => setMobileSidebar(true)}
-            className="md:hidden p-3 text-[#A1A1AA]"
-          >
-            <Menu className="w-5 h-5" />
-          </button>
-          <div className="flex-1">
-            <ChatHeader
-              tone={active?.tone || DEFAULT_TONE}
-              model={active?.model || DEFAULT_MODEL}
-              onToneChange={setTone}
-              onModelChange={setModel}
-              onClearSession={handleClearSession}
-            />
-          </div>
-        </div>
+        <ChatHeader
+          tone={active?.tone || DEFAULT_TONE}
+          model={active?.model || DEFAULT_MODEL}
+          onToneChange={setTone}
+          onModelChange={setModel}
+          onClearSession={handleClearSession}
+          onMenu={() => setMobileSidebar(true)}
+        />
 
         <ChatPane session={active} streaming={streaming} streamText={streamText} />
 

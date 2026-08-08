@@ -17,4 +17,5 @@ export const TONES = [
 
 export const DEFAULT_TONE = "fun_casual";
 
-export const STORAGE_WARN_BYTES = 3.5 * 1024 * 1024;
+export const STORAGE_LIMIT_BYTES = 5 * 1024 * 1024; // typical browser localStorage cap (~5 MB)
+export const STORAGE_WARN_BYTES = 4 * 1024 * 1024;  // warn when approaching the cap
