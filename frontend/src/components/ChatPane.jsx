@@ -42,9 +42,13 @@ export const ChatPane = ({ session, streaming, streamText }) => {
             Your private writing room.
           </h2>
           <p className="text-[#A1A1AA] leading-relaxed mb-6">
-            Roleplay and creative writing with Gemini. Nothing you type or attach is stored on a server —
-            history and images live in your browser's localStorage. Switch to <span className="text-[#FFB000]">Story</span> tone
-            for uncensored fiction, or keep it <span className="text-[#90E0EF]">Professional</span>.
+            සිංහල creative writing සහ roleplay with Gemini. Nothing you type or attach is stored on a
+            server — history and images live in your browser's localStorage. Pick a tone —{" "}
+            <span className="text-[#FFB000]">Fun &amp; Casual</span>,{" "}
+            <span className="text-[#00E676]">Casual</span>,{" "}
+            <span className="text-[#90E0EF]">Professional</span>,{" "}
+            <span className="text-[#F78166]">Story</span>, or{" "}
+            <span className="text-[#E5C07B]">Comedy</span> — and start writing in Sinhala.
           </p>
           <div className="flex gap-4 text-sm text-[#52525B]">
             <span className="flex items-center gap-1.5"><Sparkles className="w-4 h-4" /> Temp locked 0.9</span>
@@ -69,12 +73,12 @@ export const ChatPane = ({ session, streaming, streamText }) => {
           >
             {m.role === "user" ? (
               <div className="bg-white/5 rounded-2xl rounded-tr-sm px-5 py-4 max-w-[85%]">
-                {m.text && <p className="whitespace-pre-wrap leading-relaxed text-[#EDEDED]">{m.text}</p>}
+          <p className="whitespace-pre-wrap text-[#EDEDED] sinhala-text">{m.text}</p>
                 <AttachmentThumbs attachments={m.attachments} />
               </div>
             ) : (
               <div className="border-l-2 border-[#52525B] pl-4 py-1 max-w-[95%]">
-                <p className="whitespace-pre-wrap leading-relaxed text-[#EDEDED]">{m.text}</p>
+                <p className="whitespace-pre-wrap text-[#EDEDED] sinhala-text">{m.text}</p>
               </div>
             )}
           </motion.div>
@@ -83,7 +87,7 @@ export const ChatPane = ({ session, streaming, streamText }) => {
         {streaming && (
           <div data-testid="streaming-message" className="flex justify-start">
             <div className="border-l-2 border-[#FFB000] pl-4 py-1 max-w-[95%]">
-              <p className={`whitespace-pre-wrap leading-relaxed text-[#EDEDED] ${!streamText ? "cursor-blink" : ""}`}>
+              <p className={`whitespace-pre-wrap text-[#EDEDED] sinhala-text ${!streamText ? "cursor-blink" : ""}`}>
                 <span>{streamText}</span>
                 {streamText && <span className="cursor-blink" />}
               </p>

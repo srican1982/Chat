@@ -8,8 +8,13 @@ export const MODELS = [
 export const DEFAULT_MODEL = MODELS[0].id;
 
 export const TONES = [
-  { id: "professional", label: "Professional", color: "#90E0EF", desc: "Standard safe assistant" },
-  { id: "story", label: "Story", color: "#FFB000", desc: "No-refusal creative writing" },
+  { id: "fun_casual", label: "Fun & Casual", color: "#FFB000", desc: "Playful, expressive Sinhala" },
+  { id: "casual", label: "Casual", color: "#00E676", desc: "Witty, grounded friend" },
+  { id: "professional", label: "Professional", color: "#90E0EF", desc: "Formal, literary Sinhala" },
+  { id: "story", label: "Story Mode", color: "#F78166", desc: "Novel-style Sinhala fiction" },
+  { id: "comedy", label: "Comedy Mode", color: "#E5C07B", desc: "Absurd Sinhala comedy" },
 ];
+
+export const DEFAULT_TONE = "fun_casual";
 
 export const STORAGE_WARN_BYTES = 3.5 * 1024 * 1024;

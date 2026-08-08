@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { readImageFile, extractVideoFrames } from "@/lib/media";
+import { TONES } from "@/lib/constants";
 
 export const Composer = ({ onSend, disabled, tone }) => {
   const [text, setText] = useState("");
@@ -57,7 +58,7 @@ export const Composer = ({ onSend, disabled, tone }) => {
     e.target.style.height = Math.min(e.target.scrollHeight, 200) + "px";
   };
 
-  const accent = tone === "story" ? "#FFB000" : "#90E0EF";
+  const accent = (TONES.find((t) => t.id === tone) || TONES[0]).color;
 
   return (
     <div className="absolute bottom-0 left-0 right-0 p-4 md:p-8 bg-gradient-to-t from-[#0A0A0B] via-[#0A0A0B]/90 to-transparent">

@@ -20,7 +20,7 @@ export function saveStore(store) {
   localStorage.setItem(KEY, JSON.stringify(store));
 }
 
-export function newSession(model = DEFAULT_MODEL, tone = "professional") {
+export function newSession(model = DEFAULT_MODEL, tone = "fun_casual") {
   return {
     id: uid(),
     title: "New Chat",

@@ -8,7 +8,7 @@ import { ChatHeader } from "@/components/ChatHeader";
 import { ChatPane } from "@/components/ChatPane";
 import { Composer } from "@/components/Composer";
 import { PrivacyModal } from "@/components/PrivacyModal";
-import { DEFAULT_MODEL, STORAGE_WARN_BYTES } from "@/lib/constants";
+import { DEFAULT_MODEL, DEFAULT_TONE, STORAGE_WARN_BYTES } from "@/lib/constants";
 import {
   loadStore, saveStore, newSession, getStorageBytes, exportSessions, parseImport,
 } from "@/lib/storage";
@@ -261,7 +261,7 @@ function App() {
           </button>
           <div className="flex-1">
             <ChatHeader
-              tone={active?.tone || "professional"}
+              tone={active?.tone || DEFAULT_TONE}
               model={active?.model || DEFAULT_MODEL}
               onToneChange={setTone}
               onModelChange={setModel}
@@ -272,7 +272,7 @@ function App() {
 
         <ChatPane session={active} streaming={streaming} streamText={streamText} />
 
-        <Composer onSend={handleSend} disabled={streaming} tone={active?.tone || "professional"} />
+        <Composer onSend={handleSend} disabled={streaming} tone={active?.tone || DEFAULT_TONE} />
       </main>
 
       <PrivacyModal open={privacyOpen} onOpenChange={setPrivacyOpen} />
