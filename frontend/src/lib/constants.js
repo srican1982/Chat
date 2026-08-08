@@ -1,0 +1,15 @@
+export const MODELS = [
+  { id: "google/gemini-3.5-flash-lite", label: "Gemini 3.5 Flash Lite", hint: "Default · fastest, lightweight" },
+  { id: "google/gemini-2.5-flash", label: "Gemini 2.5 Flash", hint: "Recommended for image-heavy sessions" },
+  { id: "google/gemini-2.5-pro", label: "Gemini 2.5 Pro", hint: "Recommended for image-heavy sessions" },
+  { id: "google/gemini-3.1-pro-preview", label: "Gemini 3.1 Pro Preview", hint: "Preview · most capable" },
+];
+
+export const DEFAULT_MODEL = MODELS[0].id;
+
+export const TONES = [
+  { id: "professional", label: "Professional", color: "#90E0EF", desc: "Standard safe assistant" },
+  { id: "story", label: "Story", color: "#FFB000", desc: "No-refusal creative writing" },
+];
+
+export const STORAGE_WARN_BYTES = 3.5 * 1024 * 1024;
