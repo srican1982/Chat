@@ -1,0 +1,101 @@
+{
+  "app_concept": {
+    "vibe": "Midnight Velvet & Bioluminescence - A secure, local vault for creative minds.",
+    "archetype": "Luxury Dark mixed with Technical Privacy"
+  },
+  "typography": {
+    "fonts": {
+      "headings": "Outfit",
+      "body": "IBM Plex Sans",
+      "monospace": "JetBrains Mono"
+    },
+    "hierarchy": {
+      "h1": "text-4xl tracking-tighter font-light",
+      "h2": "text-2xl tracking-tight",
+      "body": "text-base leading-relaxed"
+    },
+    "rules": [
+      "Do not use Inter, Roboto, Lato, or Space Grotesk.",
+      "Use tight letter spacing for headings.",
+      "Chat text MUST use IBM Plex Sans with loose line-height (leading-relaxed) for long-form readability."
+    ]
+  },
+  "colors": {
+    "background": {
+      "main": "#0A0A0B",
+      "sidebar": "#111113",
+      "composer": "#1A1A1D"
+    },
+    "text": {
+      "primary": "#EDEDED",
+      "secondary": "#A1A1AA",
+      "muted": "#52525B"
+    },
+    "accents": {
+      "professional_tone": "#90E0EF",
+      "story_tone": "#FFB000",
+      "warning": "#FF3B30",
+      "local_success": "#00E676"
+    },
+    "rules": [
+      "NEVER use pure #000000 or #808080.",
+      "No gradients for backgrounds. Use solid tinted darks with noise textures.",
+      "Forbidden colors: #7351B7 (AI purple), #1B93A4 (Teal)."
+    ]
+  },
+  "surfaces": {
+    "header": "bg-[#0A0A0B]/80 backdrop-blur-2xl border-b border-white/5 z-50",
+    "chat_bubble_ai": "bg-transparent border-l-2 border-[#52525B] pl-4 py-1",
+    "chat_bubble_user": "bg-white/5 rounded-2xl rounded-tr-sm px-5 py-4",
+    "composer": "bg-[#1A1A1D] border border-white/10 shadow-2xl rounded-3xl",
+    "sidebar_item_hover": "hover:bg-white/5 transition-colors duration-200"
+  },
+  "layouts": {
+    "sidebar": "w-72 flex-shrink-0 border-r border-white/5 h-screen overflow-y-auto hidden md:flex flex-col p-6",
+    "main_pane": "flex-1 flex flex-col h-screen relative bg-[#0A0A0B]",
+    "chat_container": "flex-1 overflow-y-auto p-4 md:p-8 scroll-smooth pb-40",
+    "composer_container": "absolute bottom-0 left-0 right-0 p-4 md:p-8 bg-gradient-to-t from-[#0A0A0B] via-[#0A0A0B]/80 to-transparent",
+    "spacing_strategy": "Use generous spacing. Chat messages should have gap-8 between them."
+  },
+  "components": {
+    "sidebar": {
+      "instruction": "Contains New Chat button, session list, and bottom footer with Storage indicator (progress bar) and Privacy Settings."
+    },
+    "chat_header": {
+      "instruction": "Sticky top glassmorphic bar containing Tone Selector (Professional vs Story) and Model Picker (Dropdown). Add a 'Local Only' lock icon indicator."
+    },
+    "message_composer": {
+      "instruction": "Floating dock style. Contains attachment button (image/video), textarea (auto-growing), and submit button. Above the textarea, a horizontal scrollable tray for image/video preview thumbnails (w-16 h-16 rounded-lg object-cover)."
+    },
+    "tone_selector": {
+      "instruction": "Use standard Select component but style the triggers. When 'Story' is selected, tint the trigger border with accent color #FFB000. When 'Professional', use #90E0EF."
+    },
+    "storage_warning": {
+      "instruction": "When localStorage > 3.5MB, trigger a Sonner Toast with #FF3B30 destructive styling."
+    },
+    "privacy_modal": {
+      "instruction": "Shadcn Dialog with intense backdrop-blur. Content explains that all data stays in browser."
+    }
+  },
+  "motion": {
+    "chat_entrance": "Framer Motion: fade in and slide up (y: 10) for new messages.",
+    "hover_states": "All buttons must have distinct hover states (lighter background + text color change).",
+    "transitions": "Use specific transition properties, e.g., transition: opacity 0.2s ease, transform 0.2s ease. NO 'transition: all'."
+  },
+  "instructions_to_main_agent": [
+    "Follow the constraints rigorously. The UI must feel like a premium, local vault.",
+    "Set up the layout using Flexbox/Grid ensuring the sidebar can toggle on mobile.",
+    "Implement base64 image/video logic cleanly without breaking UI states.",
+    "Ensure local storage logic uses proper try/catch for quota exceeded errors, linking to the Sonner Toast warning."
+  ],
+  "universal_guidelines_for_main_agent": [
+    "All interactive and key informational elements MUST include a data-testid attribute.",
+    "Use Javascript (.js/.jsx) for Shadcn components, not TypeScript.",
+    "Include a subtle SVG noise/grain texture overlay fixed to the screen with pointer-events-none and 3% opacity.",
+    "Never use completely transparent backgrounds over scrolling content.",
+    "Do not use generic centered text alignment. Align everything to the left for standard reading flow.",
+    "Ensure contrast ratio is accessible (WCAG AA).",
+    "Never use HTML native inputs or selects. ONLY use Shadcn components.",
+    "Sonner component must be used for Toasts."
+  ]
+}
