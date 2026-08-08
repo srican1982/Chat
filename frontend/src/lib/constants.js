@@ -13,6 +13,7 @@ export const TONES = [
   { id: "professional", label: "Professional", color: "#90E0EF", desc: "Formal, literary Sinhala" },
   { id: "story", label: "Story Mode", color: "#F78166", desc: "Novel-style Sinhala fiction" },
   { id: "comedy", label: "Comedy Mode", color: "#E5C07B", desc: "Absurd Sinhala comedy" },
+  { id: "zen", label: "Zen", color: "#8AB0C4", desc: "Calm, non-judgmental companion" },
 ];
 
 export const DEFAULT_TONE = "fun_casual";
