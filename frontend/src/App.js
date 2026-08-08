@@ -254,7 +254,7 @@ function App() {
   }
 
   return (
-    <div className="App flex h-screen bg-[#0A0A0B] overflow-hidden">
+    <div className="App flex h-[100dvh] bg-[#0A0A0B] overflow-hidden">
       <div className="grain-overlay" />
 
       {/* Desktop sidebar (only mounted on desktop to avoid duplicate testids) */}
@@ -297,7 +297,7 @@ function App() {
         </div>
       )}
 
-      <main className="flex-1 flex flex-col h-screen relative bg-[#0A0A0B]">
+      <main className="flex-1 flex flex-col h-[100dvh] relative bg-[#0A0A0B] overflow-hidden">
         <ChatHeader
           tone={active?.tone || DEFAULT_TONE}
           model={active?.model || DEFAULT_MODEL}

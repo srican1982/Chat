@@ -1,24 +1,61 @@
 import React, { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
-import { Lock, Sparkles, ImageIcon, Copy, Check } from "lucide-react";
+import { Lock, Sparkles, ImageIcon, Copy, Check, X } from "lucide-react";
 import { toast } from "sonner";
 import { TONES } from "@/lib/constants";
 
-const AttachmentThumbs = ({ attachments }) => {
+const AttachmentThumbs = ({ attachments, onOpen }) => {
   if (!attachments || attachments.length === 0) return null;
   return (
     <div className="flex gap-2 flex-wrap mt-3">
       {attachments.map((a, i) => (
-        <div key={i} className="relative">
+        <button
+          key={i}
+          type="button"
+          data-testid={`attachment-thumb-${i}`}
+          onClick={() => onOpen && onOpen(a)}
+          className="relative block cursor-zoom-in group/thumb"
+          style={{ transition: "transform 0.15s ease" }}
+        >
           <img src={a.thumb} alt={a.name}
-            className="w-16 h-16 rounded-lg object-cover border border-white/10" />
+            className="w-16 h-16 rounded-lg object-cover border border-white/10 group-hover/thumb:border-white/30" />
           {a.type === "video" && (
             <span className="absolute bottom-0.5 right-0.5 text-[9px] font-mono bg-black/70 px-1 rounded text-[#FFB000]">
-              {a.frames.length}f
+              {a.frames ? a.frames.length + "f" : "vid"}
             </span>
           )}
-        </div>
+        </button>
       ))}
+    </div>
+  );
+};
+
+const ImageViewer = ({ item, onClose }) => {
+  if (!item) return null;
+  return (
+    <div
+      data-testid="image-viewer"
+      onClick={onClose}
+      className="fixed inset-0 z-[150] flex items-center justify-center bg-black/90 backdrop-blur-sm p-4 animate-in fade-in"
+    >
+      <button
+        data-testid="image-viewer-close"
+        onClick={onClose}
+        className="absolute top-4 right-4 text-white/70 hover:text-white bg-white/10 rounded-full p-2"
+      >
+        <X className="w-5 h-5" />
+      </button>
+      <img
+        src={item.thumb}
+        alt={item.name}
+        onClick={(e) => e.stopPropagation()}
+        className="max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl"
+      />
+      {item.name && (
+        <div className="absolute bottom-4 left-0 right-0 text-center text-xs text-white/60 font-mono px-4 truncate">
+          {item.name}
+        </div>
+      )}
     </div>
   );
 };
@@ -52,6 +89,7 @@ const CopyButton = ({ text, testid, align = "left" }) => {
 
 export const ChatPane = ({ session, streaming, streamText }) => {
   const bottomRef = useRef(null);
+  const [viewer, setViewer] = useState(null);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
@@ -88,6 +126,7 @@ export const ChatPane = ({ session, streaming, streamText }) => {
   }
 
   return (
+    <>
     <div data-testid="chat-container" className="flex-1 overflow-y-auto p-4 md:p-8 scroll-smooth">
       <div className="max-w-3xl mx-auto flex flex-col gap-8">
         {messages.map((m) => (
@@ -102,7 +141,7 @@ export const ChatPane = ({ session, streaming, streamText }) => {
             {m.role === "user" ? (
               <div className="bg-white/5 rounded-2xl rounded-tr-sm px-5 py-4 max-w-[85%]">
                 {m.text && <p className="whitespace-pre-wrap text-[#EDEDED] sinhala-text">{m.text}</p>}
-                <AttachmentThumbs attachments={m.attachments} />
+                <AttachmentThumbs attachments={m.attachments} onOpen={setViewer} />
               </div>
             ) : (
               <div className="border-l-2 border-[#52525B] pl-4 py-1 max-w-[95%]">
@@ -133,6 +172,8 @@ export const ChatPane = ({ session, streaming, streamText }) => {
         <div ref={bottomRef} />
       </div>
     </div>
+    <ImageViewer item={viewer} onClose={() => setViewer(null)} />
+    </>
   );
 };
 
