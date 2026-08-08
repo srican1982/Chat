@@ -1,10 +1,13 @@
 import os
 import json
+import hmac
 from pathlib import Path
 from typing import List, Any, Optional
+from datetime import datetime, timezone, timedelta
 
+import jwt
 import httpx
-from fastapi import FastAPI, APIRouter
+from fastapi import FastAPI, APIRouter, Header, HTTPException
 from fastapi.responses import StreamingResponse, JSONResponse
 from dotenv import load_dotenv
 from starlette.middleware.cors import CORSMiddleware
@@ -15,6 +18,40 @@ load_dotenv(ROOT_DIR / '.env')
 
 OPENROUTER_API_KEY = os.environ.get('OPENROUTER_API_KEY', '')
 OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions"
+
+# --- Password gate config ---
+APP_PASSWORD = os.environ.get('APP_PASSWORD', '')  # empty = gate disabled (open app)
+JWT_SECRET = os.environ.get('JWT_SECRET', 'change-me-dev-secret')
+GATE_TOKEN_DAYS = int(os.environ.get('GATE_TOKEN_DAYS', '30'))
+JWT_ALG = "HS256"
+
+
+def create_gate_token() -> str:
+    payload = {
+        "scope": "gate",
+        "exp": datetime.now(timezone.utc) + timedelta(days=GATE_TOKEN_DAYS),
+    }
+    return jwt.encode(payload, JWT_SECRET, algorithm=JWT_ALG)
+
+
+def verify_gate_token(token: str) -> bool:
+    try:
+        payload = jwt.decode(token, JWT_SECRET, algorithms=[JWT_ALG])
+        return payload.get("scope") == "gate"
+    except jwt.PyJWTError:
+        return False
+
+
+def require_gate(authorization: Optional[str]):
+    """Raise 401 unless the gate is disabled or a valid token is presented."""
+    if not APP_PASSWORD:
+        return  # gate disabled
+    token = ""
+    if authorization and authorization.startswith("Bearer "):
+        token = authorization[7:]
+    if not token or not verify_gate_token(token):
+        raise HTTPException(status_code=401, detail="Locked. Enter the app password.")
+
 
 # System prompts by tone (fully locked / not user-editable). Assistant replies in Sinhala.
 TONE_PROMPTS = {
@@ -78,6 +115,10 @@ class ChatRequest(BaseModel):
     messages: List[Any]
 
 
+class VerifyRequest(BaseModel):
+    password: str
+
+
 @api_router.get("/")
 async def root():
     return {"message": "AI Roleplay Chat proxy online", "configured": bool(OPENROUTER_API_KEY)}
@@ -86,6 +127,21 @@ async def root():
 @api_router.get("/health")
 async def health():
     return {"status": "ok", "key_configured": bool(OPENROUTER_API_KEY)}
+
+
+@api_router.get("/auth/status")
+async def auth_status():
+    return {"gate_enabled": bool(APP_PASSWORD)}
+
+
+@api_router.post("/auth/verify")
+async def auth_verify(req: VerifyRequest):
+    if not APP_PASSWORD:
+        return {"token": create_gate_token(), "gate_enabled": False}
+    # constant-time compare to avoid timing leaks
+    if hmac.compare_digest(req.password, APP_PASSWORD):
+        return {"token": create_gate_token(), "gate_enabled": True}
+    raise HTTPException(status_code=401, detail="Incorrect password")
 
 
 def build_payload(req: ChatRequest) -> dict:
@@ -138,7 +194,8 @@ async def event_generator(payload: dict):
 
 
 @api_router.post("/chat/stream")
-async def chat_stream(req: ChatRequest):
+async def chat_stream(req: ChatRequest, authorization: Optional[str] = Header(default=None)):
+    require_gate(authorization)  # 401 if locked
     if not OPENROUTER_API_KEY:
         return JSONResponse(
             status_code=503,

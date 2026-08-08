@@ -75,7 +75,7 @@ export const Sidebar = ({
         <div data-testid="storage-indicator">
           <div className="flex justify-between text-xs mb-1.5">
             <span className="text-[#A1A1AA]">Local Storage</span>
-            <span className={`font-mono ${over ? "text-[#FF3B30]" : "text-[#52525B]"}`}>{mb} MB</span>
+            <span className={`font-mono ${over ? "text-[#FF3B30]" : "text-[#52525B]"}`}>{mb} / 5 MB</span>
           </div>
           <Progress value={pct} className="h-1.5 bg-white/5" />
         </div>

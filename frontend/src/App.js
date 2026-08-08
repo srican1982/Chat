@@ -7,10 +7,12 @@ import { ChatHeader } from "@/components/ChatHeader";
 import { ChatPane } from "@/components/ChatPane";
 import { Composer } from "@/components/Composer";
 import { PrivacyModal } from "@/components/PrivacyModal";
+import { LockScreen } from "@/components/LockScreen";
 import { DEFAULT_MODEL, DEFAULT_TONE, STORAGE_WARN_BYTES } from "@/lib/constants";
 import {
   loadStore, saveStore, newSession, getStorageBytes, exportSessions, parseImport,
 } from "@/lib/storage";
+import { getGateToken, clearGateToken } from "@/lib/gate";
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
@@ -37,8 +39,37 @@ function App() {
   const [privacyOpen, setPrivacyOpen] = useState(false);
   const [mobileSidebar, setMobileSidebar] = useState(false);
   const [storageBytes, setStorageBytes] = useState(getStorageBytes());
+  const [locked, setLocked] = useState(null); // null = checking, true = show lock, false = unlocked
+  const [isMobile, setIsMobile] = useState(
+    () => typeof window !== "undefined" && window.matchMedia("(max-width: 767px)").matches
+  );
   const warnedRef = useRef(false);
   const initRef = useRef(false);
+
+  // Track viewport for a single (non-duplicated) sidebar render.
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 767px)");
+    const handler = (e) => setIsMobile(e.matches);
+    mq.addEventListener("change", handler);
+    return () => mq.removeEventListener("change", handler);
+  }, []);
+
+  // Check whether the password gate is enabled and whether we already hold a token.
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const resp = await fetch(`${API}/auth/status`);
+        const data = await resp.json();
+        if (cancelled) return;
+        if (data.gate_enabled && !getGateToken()) setLocked(true);
+        else setLocked(false);
+      } catch {
+        if (!cancelled) setLocked(false); // fail open to avoid hard lockout on network hiccup
+      }
+    })();
+    return () => { cancelled = true; };
+  }, []);
 
   // Ensure there's always an active session on first load.
   useEffect(() => {
@@ -89,7 +120,7 @@ function App() {
 
   // Session controls
   const handleNew = () => {
-    const s = newSession(active?.model || DEFAULT_MODEL, active?.tone || "professional");
+    const s = newSession(active?.model || DEFAULT_MODEL, active?.tone || DEFAULT_TONE);
     persist({ sessions: [s, ...store.sessions], activeId: s.id });
     setMobileSidebar(false);
   };
@@ -148,7 +179,10 @@ function App() {
     try {
       const resp = await fetch(`${API}/chat/stream`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${getGateToken()}`,
+        },
         body: JSON.stringify({
           model: active.model,
           tone: active.tone,
@@ -156,6 +190,11 @@ function App() {
         }),
       });
 
+      if (resp.status === 401) {
+        clearGateToken();
+        setLocked(true);
+        throw new Error("Session expired — please unlock again.");
+      }
       if (!resp.ok) {
         const err = await resp.json().catch(() => ({}));
         throw new Error(err.error || `Server error ${resp.status}`);
@@ -207,28 +246,37 @@ function App() {
     }
   };
 
+  if (locked === null) {
+    return <div className="fixed inset-0 bg-[#0A0A0B]" data-testid="gate-loading" />;
+  }
+  if (locked) {
+    return <LockScreen onUnlock={() => setLocked(false)} />;
+  }
+
   return (
     <div className="App flex h-screen bg-[#0A0A0B] overflow-hidden">
       <div className="grain-overlay" />
 
-      {/* Desktop sidebar */}
-      <Sidebar
-        sessions={store.sessions}
-        activeId={store.activeId}
-        storageBytes={storageBytes}
-        onNew={handleNew}
-        onSwitch={handleSwitch}
-        onRename={handleRename}
-        onDelete={handleDelete}
-        onClearAll={handleClearAll}
-        onExport={handleExport}
-        onImport={handleImport}
-        onOpenPrivacy={() => setPrivacyOpen(true)}
-      />
+      {/* Desktop sidebar (only mounted on desktop to avoid duplicate testids) */}
+      {!isMobile && (
+        <Sidebar
+          sessions={store.sessions}
+          activeId={store.activeId}
+          storageBytes={storageBytes}
+          onNew={handleNew}
+          onSwitch={handleSwitch}
+          onRename={handleRename}
+          onDelete={handleDelete}
+          onClearAll={handleClearAll}
+          onExport={handleExport}
+          onImport={handleImport}
+          onOpenPrivacy={() => setPrivacyOpen(true)}
+        />
+      )}
 
       {/* Mobile sidebar overlay */}
-      {mobileSidebar && (
-        <div className="fixed inset-0 z-50 md:hidden">
+      {isMobile && mobileSidebar && (
+        <div className="fixed inset-0 z-50">
           <div className="absolute inset-0 bg-black/60" onClick={() => setMobileSidebar(false)} />
           <div className="absolute left-0 top-0 h-full">
             <Sidebar
