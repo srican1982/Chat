@@ -113,8 +113,9 @@ export const ChatPane = ({ session, streaming, streamText }) => {
             <span className="text-[#FFB000]">Fun &amp; Casual</span>,{" "}
             <span className="text-[#00E676]">Casual</span>,{" "}
             <span className="text-[#90E0EF]">Professional</span>,{" "}
-            <span className="text-[#F78166]">Story</span>, or{" "}
-            <span className="text-[#E5C07B]">Comedy</span> — and start writing in Sinhala.
+            <span className="text-[#F78166]">Story</span>,{" "}
+            <span className="text-[#E5C07B]">Comedy</span>, or{" "}
+            <span className="text-[#8AB0C4]">Zen</span> — and start writing in Sinhala.
           </p>
           <div className="flex gap-4 text-sm text-[#52525B]">
             <span className="flex items-center gap-1.5"><Sparkles className="w-4 h-4" /> Temp locked 0.9</span>
