@@ -84,8 +84,7 @@ function App() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const persist = (next) => {
-    setStore(next);
+  const saveAndTrack = (next) => {
     try {
       saveStore(next);
       const bytes = getStorageBytes();
@@ -105,21 +104,36 @@ function App() {
     }
   };
 
+  const persist = (next) => {
+    setStore(next);
+    saveAndTrack(next);
+  };
+
   const active = useMemo(
     () => store.sessions.find((s) => s.id === store.activeId) || null,
     [store]
   );
 
+  // Functional update so async callers (e.g. streaming) always read the latest state,
+  // preventing stale-closure writes that would revert the auto-title.
   const updateActive = (updater) => {
-    const next = {
-      ...store,
-      sessions: store.sessions.map((s) => (s.id === store.activeId ? updater(s) : s)),
-    };
-    persist(next);
+    setStore((prev) => {
+      const next = {
+        ...prev,
+        sessions: prev.sessions.map((s) => (s.id === prev.activeId ? updater(s) : s)),
+      };
+      saveAndTrack(next);
+      return next;
+    });
   };
 
   // Session controls
   const handleNew = () => {
+    // Don't pile up empty "New Chat" duplicates — reuse the current one if it's empty.
+    if (active && active.messages.length === 0) {
+      setMobileSidebar(false);
+      return;
+    }
     const s = newSession(active?.model || DEFAULT_MODEL, active?.tone || DEFAULT_TONE);
     persist({ sessions: [s, ...store.sessions], activeId: s.id });
     setMobileSidebar(false);
@@ -169,7 +183,10 @@ function App() {
     if (!active || streaming) return;
     const userMsg = { id: "m_" + Date.now(), role: "user", text, attachments };
     const baseMessages = [...active.messages, userMsg];
-    const title = active.messages.length === 0 && text ? text.slice(0, 40) : active.title;
+    const title =
+      active.messages.length === 0
+        ? (text ? text.slice(0, 40) : (attachments && attachments.length ? "Media chat" : active.title))
+        : active.title;
 
     updateActive((s) => ({ ...s, messages: baseMessages, title }));
     setStreaming(true);

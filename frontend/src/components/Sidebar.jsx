@@ -52,7 +52,20 @@ export const Sidebar = ({
             style={{ transition: "background-color 0.2s ease" }}
           >
             <MessageSquare className="w-4 h-4 text-[#52525B] flex-shrink-0" />
-            <span className="flex-1 truncate text-sm text-[#EDEDED]">{s.title}</span>
+            <div className="flex-1 min-w-0">
+              <div className="truncate text-sm text-[#EDEDED]">{s.title}</div>
+              {(() => {
+                const last = s.messages && s.messages.length ? s.messages[s.messages.length - 1] : null;
+                const preview = last
+                  ? (last.text || (last.attachments && last.attachments.length ? "Media attached" : ""))
+                  : "Empty — start typing";
+                return preview ? (
+                  <div className="truncate text-xs text-[#52525B] sinhala-text">
+                    {last && last.role === "assistant" ? "AI: " : ""}{preview}
+                  </div>
+                ) : null;
+              })()}
+            </div>
             <button
               data-testid={`rename-session-${s.id}`}
               onClick={(e) => { e.stopPropagation(); const t = prompt("Rename session", s.title); if (t) onRename(s.id, t); }}
