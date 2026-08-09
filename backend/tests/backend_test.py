@@ -133,7 +133,7 @@ class TestChatStreaming:
         assert len(text) > 5, f"empty stream: {text!r}"
         assert any("\u0d80" <= ch <= "\u0dff" for ch in text), f"no Sinhala chars: {text[:200]}"
 
-    @pytest.mark.parametrize("tone", ["fun_casual", "casual", "professional", "story", "comedy"])
+    @pytest.mark.parametrize("tone", ["fun_casual", "casual", "professional", "story", "comedy", "zen"])
     def test_all_tones_stream(self, gate_token, tone):
         body = dict(CHAT_BODY, tone=tone)
         text, err = self._stream(gate_token, body)
