@@ -314,7 +314,7 @@ function App() {
         </div>
       )}
 
-      <main className="flex-1 flex flex-col h-[100dvh] relative bg-[#0A0A0B] overflow-hidden">
+      <main className="flex-1 flex flex-col h-[100dvh] min-h-0 relative bg-[#0A0A0B] overflow-hidden">
         <ChatHeader
           tone={active?.tone || DEFAULT_TONE}
           model={active?.model || DEFAULT_MODEL}

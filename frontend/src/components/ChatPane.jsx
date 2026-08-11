@@ -99,7 +99,7 @@ export const ChatPane = ({ session, streaming, streamText }) => {
 
   if (messages.length === 0 && !streaming) {
     return (
-      <div data-testid="empty-state" className="flex-1 overflow-y-auto flex items-center justify-start p-8 md:p-16 pb-40">
+      <div data-testid="empty-state" className="flex-1 min-h-0 overflow-y-auto flex items-center justify-start p-8 md:p-16">
         <div className="max-w-lg">
           <div className="flex items-center gap-2 text-[#00E676] mb-4 font-mono text-xs">
             <Lock className="w-3.5 h-3.5" /> STORED IN THIS BROWSER ONLY
@@ -129,7 +129,7 @@ export const ChatPane = ({ session, streaming, streamText }) => {
 
   return (
     <>
-    <div data-testid="chat-container" className="flex-1 overflow-y-auto p-4 md:p-8 scroll-smooth">
+    <div data-testid="chat-container" className="flex-1 min-h-0 overflow-y-auto p-4 md:p-8 scroll-smooth">
       <div className="max-w-3xl mx-auto flex flex-col gap-8">
         {messages.map((m) => (
           <motion.div
@@ -170,7 +170,6 @@ export const ChatPane = ({ session, streaming, streamText }) => {
             </div>
           </div>
         )}
-        <div className="h-56 sm:h-48 shrink-0" />
         <div ref={bottomRef} />
       </div>
     </div>

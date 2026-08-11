@@ -12,7 +12,7 @@ export const ChatHeader = ({ tone, model, onToneChange, onModelChange, onClearSe
   return (
     <header
       data-testid="chat-header"
-      className="sticky top-0 z-40 flex items-center gap-2 sm:gap-3 px-3 sm:px-8 py-3 bg-[#0A0A0B]/80 backdrop-blur-2xl border-b border-white/5"
+      className="flex-shrink-0 z-40 flex items-center gap-2 sm:gap-3 px-3 sm:px-8 py-3 bg-[#0A0A0B]/80 backdrop-blur-2xl border-b border-white/5"
     >
       <button
         data-testid="mobile-menu-btn"

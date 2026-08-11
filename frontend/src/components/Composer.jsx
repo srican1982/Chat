@@ -61,8 +61,8 @@ export const Composer = ({ onSend, disabled, tone }) => {
   const accent = (TONES.find((t) => t.id === tone) || TONES[0]).color;
 
   return (
-    <div className="absolute bottom-0 left-0 right-0 p-4 md:p-8 bg-gradient-to-t from-[#0A0A0B] via-[#0A0A0B]/90 to-transparent pointer-events-none">
-      <div className="max-w-3xl mx-auto pointer-events-auto">
+    <div className="flex-shrink-0 border-t border-white/5 bg-[#0A0A0B] px-4 md:px-8 pt-3 pb-3">
+      <div className="max-w-3xl mx-auto">
         <div className="bg-[#1A1A1D] border border-white/10 shadow-2xl rounded-3xl p-3">
           {attachments.length > 0 && (
             <div data-testid="attachment-tray" className="flex gap-2 overflow-x-auto px-1 pb-2 mb-1">
@@ -130,8 +130,8 @@ export const Composer = ({ onSend, disabled, tone }) => {
             </Button>
           </div>
         </div>
-        <p className="text-center text-[10px] text-[#52525B] mt-2 font-mono">
-          Temp 0.9 · Provider pinned to Google Vertex (ZDR, no retention) · Enter to send
+        <p className="text-center text-[10px] text-[#52525B] mt-2 font-mono truncate">
+          Temp 0.9 · Google Vertex (ZDR) · Enter to send
         </p>
       </div>
     </div>
