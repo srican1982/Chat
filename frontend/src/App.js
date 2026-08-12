@@ -14,14 +14,16 @@ import {
 } from "@/lib/storage";
 import { getApiKey } from "@/lib/apikey";
 import { streamChat } from "@/lib/openrouter";
+import { extractCast } from "@/lib/cast";
 
 function toApiMessages(msgs) {
   return msgs.map((m) => {
+    const label = m.role === "user" && m.speaker ? `[${m.speaker}]: ` : "";
     if (!m.attachments || m.attachments.length === 0) {
-      return { role: m.role, content: m.text };
+      return { role: m.role, content: label + (m.text || "") };
     }
     const content = [];
-    if (m.text) content.push({ type: "text", text: m.text });
+    if (m.text || label) content.push({ type: "text", text: label + (m.text || "") });
     m.attachments.forEach((a) => {
       (a.frames || [a.thumb]).forEach((url) => {
         content.push({ type: "image_url", image_url: { url } });
@@ -167,14 +169,14 @@ function App() {
   const setTone = (tone) => updateActive((s) => ({ ...s, tone }));
   const setModel = (model) => updateActive((s) => ({ ...s, model }));
 
-  const handleSend = async (text, attachments) => {
+  const handleSend = async (text, attachments, speaker) => {
     if (!active || streaming) return;
     if (!getApiKey()) {
       setKeyModalOpen(true);
       toast.error("Add your OpenRouter API key first");
       return;
     }
-    const userMsg = { id: "m_" + Date.now(), role: "user", text, attachments };
+    const userMsg = { id: "m_" + Date.now(), role: "user", text, attachments, speaker: speaker || "" };
     const baseMessages = [...active.messages, userMsg];
     const title =
       active.messages.length === 0
@@ -194,19 +196,24 @@ function App() {
         messages: toApiMessages(baseMessages),
         onToken: (delta) => {
           acc += delta;
-          setStreamText(acc);
+          setStreamText(extractCast(acc).clean);
         },
       });
 
       if (!acc) throw new Error("No response received. Check your key / model.");
 
-      const aiMsg = { id: "m_" + Date.now() + "_a", role: "assistant", text: acc };
-      updateActive((s) => ({ ...s, messages: [...baseMessages, aiMsg] }));
+      const { clean, cast } = extractCast(acc);
+      const aiMsg = { id: "m_" + Date.now() + "_a", role: "assistant", text: clean };
+      updateActive((s) => ({
+        ...s,
+        messages: [...baseMessages, aiMsg],
+        characters: Array.from(new Set([...(s.characters || []), ...cast])),
+      }));
     } catch (e) {
       toast.error("Generation failed", { description: e.message });
       if (/API key/i.test(e.message)) setKeyModalOpen(true);
       if (acc) {
-        const aiMsg = { id: "m_" + Date.now() + "_a", role: "assistant", text: acc };
+        const aiMsg = { id: "m_" + Date.now() + "_a", role: "assistant", text: extractCast(acc).clean };
         updateActive((s) => ({ ...s, messages: [...baseMessages, aiMsg] }));
       }
     } finally {
@@ -273,7 +280,7 @@ function App() {
 
         <ChatPane session={active} streaming={streaming} streamText={streamText} />
 
-        <Composer onSend={handleSend} disabled={streaming} tone={active?.tone || DEFAULT_TONE} />
+        <Composer onSend={handleSend} disabled={streaming} tone={active?.tone || DEFAULT_TONE} characters={active?.characters || []} />
       </main>
 
       <PrivacyModal open={privacyOpen} onOpenChange={setPrivacyOpen} />

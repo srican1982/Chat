@@ -142,6 +142,9 @@ export const ChatPane = ({ session, streaming, streamText }) => {
           >
             {m.role === "user" ? (
               <div className="bg-white/5 rounded-2xl rounded-tr-sm px-5 py-4 max-w-[85%]">
+                {m.speaker && (
+                  <div className="text-[11px] font-medium text-[#90E0EF] mb-1">{m.speaker}</div>
+                )}
                 {m.text && <p className="whitespace-pre-wrap text-[#EDEDED] sinhala-text">{m.text}</p>}
                 <AttachmentThumbs attachments={m.attachments} onOpen={setViewer} />
               </div>

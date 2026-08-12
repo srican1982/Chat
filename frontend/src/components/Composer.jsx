@@ -1,15 +1,16 @@
 import React, { useRef, useState } from "react";
-import { Paperclip, ArrowUp, X, Loader2 } from "lucide-react";
+import { Paperclip, ArrowUp, X, Loader2, UserRound } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { readImageFile, extractVideoFrames } from "@/lib/media";
 import { TONES } from "@/lib/constants";
 
-export const Composer = ({ onSend, disabled, tone }) => {
+export const Composer = ({ onSend, disabled, tone, characters = [] }) => {
   const [text, setText] = useState("");
   const [attachments, setAttachments] = useState([]);
   const [processing, setProcessing] = useState(false);
+  const [speaker, setSpeaker] = useState("");
   const fileRef = useRef(null);
   const taRef = useRef(null);
 
@@ -39,7 +40,7 @@ export const Composer = ({ onSend, disabled, tone }) => {
   const submit = () => {
     if (disabled || processing) return;
     if (!text.trim() && attachments.length === 0) return;
-    onSend(text.trim(), attachments);
+    onSend(text.trim(), attachments, speaker);
     setText("");
     setAttachments([]);
     if (taRef.current) taRef.current.style.height = "auto";
@@ -64,6 +65,28 @@ export const Composer = ({ onSend, disabled, tone }) => {
     <div className="flex-shrink-0 border-t border-white/5 bg-[#0A0A0B] px-4 md:px-8 pt-3 pb-3">
       <div className="max-w-3xl mx-auto">
         <div className="bg-[#1A1A1D] border border-white/10 shadow-2xl rounded-3xl p-3">
+          {characters.length > 0 && (
+            <div data-testid="speaker-bar" className="flex items-center gap-2 px-1 pb-2 overflow-x-auto">
+              <UserRound className="w-3.5 h-3.5 text-[#52525B] flex-shrink-0" />
+              <span className="text-[10px] text-[#52525B] flex-shrink-0 font-mono">As:</span>
+              {["", ...characters].map((c) => (
+                <button
+                  key={c || "you"}
+                  type="button"
+                  data-testid={`speaker-${c || "you"}`}
+                  onClick={() => setSpeaker(c)}
+                  className={`text-xs px-2.5 py-1 rounded-full flex-shrink-0 border ${
+                    speaker === c
+                      ? "bg-white/10 border-white/25 text-[#EDEDED]"
+                      : "bg-transparent border-white/10 text-[#A1A1AA] hover:text-[#EDEDED]"
+                  }`}
+                  style={{ transition: "background-color 0.15s ease" }}
+                >
+                  {c || "You"}
+                </button>
+              ))}
+            </div>
+          )}
           {attachments.length > 0 && (
             <div data-testid="attachment-tray" className="flex gap-2 overflow-x-auto px-1 pb-2 mb-1">
               {attachments.map((a, i) => (
@@ -113,7 +136,7 @@ export const Composer = ({ onSend, disabled, tone }) => {
               value={text}
               onChange={autoGrow}
               onKeyDown={onKeyDown}
-              placeholder="Write your scene…"
+              placeholder={speaker ? `Write as ${speaker}…` : "Write your scene…"}
               rows={1}
               className="flex-1 resize-none border-0 bg-transparent focus-visible:ring-0 text-[#EDEDED] placeholder:text-[#52525B] py-2 max-h-[200px] leading-relaxed text-base"
             />
