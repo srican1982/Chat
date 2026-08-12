@@ -146,6 +146,26 @@ function App() {
     updateActive((s) => ({ ...s, messages: [], title: "New Chat", characters: [] }));
     toast.success("Session wiped");
   };
+
+  const handleDeleteMessage = (id) => {
+    updateActive((s) => ({ ...s, messages: s.messages.filter((m) => m.id !== id) }));
+    toast.success("Message deleted");
+  };
+
+  const handleCopyAllAI = async () => {
+    const replies = (active?.messages || []).filter((m) => m.role === "assistant" && m.text);
+    if (replies.length === 0) {
+      toast.error("No AI responses to copy yet");
+      return;
+    }
+    const text = replies.map((m) => m.text).join("\n\n———\n\n");
+    try {
+      await navigator.clipboard.writeText(text);
+      toast.success(`Copied ${replies.length} AI response${replies.length > 1 ? "s" : ""}`);
+    } catch {
+      toast.error("Could not copy");
+    }
+  };
   const handleClearAll = () => {
     const s = newSession();
     persist({ sessions: [s], activeId: s.id });
@@ -276,9 +296,10 @@ function App() {
           onModelChange={setModel}
           onClearSession={handleClearSession}
           onMenu={() => setMobileSidebar(true)}
+          onCopyAllAI={handleCopyAllAI}
         />
 
-        <ChatPane session={active} streaming={streaming} streamText={streamText} />
+        <ChatPane session={active} streaming={streaming} streamText={streamText} onDeleteMessage={handleDeleteMessage} />
 
         <Composer onSend={handleSend} disabled={streaming} tone={active?.tone || DEFAULT_TONE} characters={active?.characters || []} sessionId={active?.id} />
       </main>

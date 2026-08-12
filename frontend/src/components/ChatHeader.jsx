@@ -1,12 +1,12 @@
 import React from "react";
-import { Lock, Eraser, Menu } from "lucide-react";
+import { Lock, Eraser, Menu, Copy } from "lucide-react";
 import { MODELS, TONES } from "@/lib/constants";
 import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 
-export const ChatHeader = ({ tone, model, onToneChange, onModelChange, onClearSession, onMenu }) => {
+export const ChatHeader = ({ tone, model, onToneChange, onModelChange, onClearSession, onMenu, onCopyAllAI }) => {
   const toneObj = TONES.find((t) => t.id === tone) || TONES[0];
 
   return (
@@ -64,6 +64,16 @@ export const ChatHeader = ({ tone, model, onToneChange, onModelChange, onClearSe
       </Select>
 
       <div className="hidden sm:block flex-1" />
+
+      <Button
+        data-testid="copy-all-ai-btn"
+        onClick={onCopyAllAI}
+        variant="ghost"
+        size="icon"
+        className="flex-shrink-0 sm:w-auto sm:px-3 gap-1.5 text-xs text-[#A1A1AA] hover:text-[#90E0EF] hover:bg-white/5"
+      >
+        <Copy className="w-4 h-4" /> <span className="hidden sm:inline">Copy AI</span>
+      </Button>
 
       <Button
         data-testid="clear-session-btn"

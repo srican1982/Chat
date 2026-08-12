@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
-import { Lock, Sparkles, ImageIcon, Copy, Check, X } from "lucide-react";
+import { Lock, Sparkles, ImageIcon, Copy, Check, X, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { TONES } from "@/lib/constants";
 
@@ -87,7 +87,7 @@ const CopyButton = ({ text, testid, align = "left" }) => {
   );
 };
 
-export const ChatPane = ({ session, streaming, streamText }) => {
+export const ChatPane = ({ session, streaming, streamText, onDeleteMessage }) => {
   const bottomRef = useRef(null);
   const [viewer, setViewer] = useState(null);
 
@@ -153,13 +153,19 @@ export const ChatPane = ({ session, streaming, streamText }) => {
                 <p className="whitespace-pre-wrap text-[#EDEDED] sinhala-text">{m.text}</p>
               </div>
             )}
-            {m.text && (
-              <CopyButton
-                text={m.text}
-                testid={`copy-${m.role}-${m.id}`}
-                align={m.role === "user" ? "right" : "left"}
-              />
-            )}
+            <div className={`mt-0.5 flex items-center gap-3 ${m.role === "user" ? "justify-end" : ""}`}>
+              {m.text && (
+                <CopyButton text={m.text} testid={`copy-${m.role}-${m.id}`} align="left" />
+              )}
+              <button
+                data-testid={`delete-msg-${m.id}`}
+                onClick={() => onDeleteMessage && onDeleteMessage(m.id)}
+                className="mt-1.5 flex items-center gap-1 text-[11px] text-[#A1A1AA] hover:text-[#FF3B30]"
+                style={{ transition: "color 0.15s ease" }}
+              >
+                <Trash2 className="w-3 h-3" /> Delete
+              </button>
+            </div>
           </motion.div>
         ))}
 
