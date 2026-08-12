@@ -5,6 +5,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { readImageFile, extractVideoFrames } from "@/lib/media";
 import { TONES } from "@/lib/constants";
+import { cleanRoster } from "@/lib/cast";
 
 export const Composer = ({ onSend, disabled, tone, characters = [], sessionId }) => {
   const [text, setText] = useState("");
@@ -20,7 +21,8 @@ export const Composer = ({ onSend, disabled, tone, characters = [], sessionId })
   }, [sessionId]);
 
   // Ignore a stale speaker that isn't part of this chat's roster.
-  const effectiveSpeaker = characters.includes(speaker) ? speaker : "";
+  const roster = cleanRoster(characters);
+  const effectiveSpeaker = roster.includes(speaker) ? speaker : "";
 
   const handleFiles = async (files) => {
     setProcessing(true);
@@ -73,11 +75,11 @@ export const Composer = ({ onSend, disabled, tone, characters = [], sessionId })
     <div className="flex-shrink-0 border-t border-white/5 bg-[#0A0A0B] px-4 md:px-8 pt-3 pb-3">
       <div className="max-w-3xl mx-auto">
         <div className="bg-[#1A1A1D] border border-white/10 shadow-2xl rounded-3xl p-3">
-          {characters.length > 0 && (
+          {roster.length > 0 && (
             <div data-testid="speaker-bar" className="flex items-center gap-2 px-1 pb-2 overflow-x-auto">
               <UserRound className="w-3.5 h-3.5 text-[#52525B] flex-shrink-0" />
               <span className="text-[10px] text-[#52525B] flex-shrink-0 font-mono">As:</span>
-              {["", ...characters].map((c) => (
+              {["", ...roster].map((c) => (
                 <button
                   key={c || "you"}
                   type="button"
