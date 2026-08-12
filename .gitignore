@@ -86,3 +86,6 @@ android-sdk/
 credentials.json
 *.key
 .credentials
+
+# Internal test reports (may contain secrets) — not needed for deployment
+test_reports/
