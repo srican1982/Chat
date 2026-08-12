@@ -1,5 +1,5 @@
 import React, { useRef } from "react";
-import { Plus, MessageSquare, Trash2, Pencil, Shield, Download, Upload, Eraser, Lock } from "lucide-react";
+import { Plus, MessageSquare, Trash2, Pencil, Shield, Download, Upload, Eraser, Lock, KeyRound } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { STORAGE_WARN_BYTES, STORAGE_LIMIT_BYTES } from "@/lib/constants";
@@ -10,7 +10,7 @@ import {
 
 export const Sidebar = ({
   sessions, activeId, storageBytes, mobile = false,
-  onNew, onSwitch, onRename, onDelete, onClearAll, onExport, onImport, onOpenPrivacy,
+  onNew, onSwitch, onRename, onDelete, onClearAll, onExport, onImport, onOpenPrivacy, onOpenApiKey,
 }) => {
   const importRef = useRef(null);
   const pct = Math.min(100, (storageBytes / STORAGE_LIMIT_BYTES) * 100);
@@ -128,6 +128,11 @@ export const Sidebar = ({
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>
+
+        <Button data-testid="apikey-btn" onClick={onOpenApiKey} variant="ghost" size="sm"
+          className="w-full gap-1.5 text-xs text-[#A1A1AA] hover:text-[#EDEDED] hover:bg-white/5">
+          <KeyRound className="w-3.5 h-3.5" /> API Key
+        </Button>
 
         <Button data-testid="privacy-btn" onClick={onOpenPrivacy} variant="ghost" size="sm"
           className="w-full gap-1.5 text-xs text-[#A1A1AA] hover:text-[#EDEDED] hover:bg-white/5">

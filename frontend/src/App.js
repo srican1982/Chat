@@ -7,14 +7,13 @@ import { ChatHeader } from "@/components/ChatHeader";
 import { ChatPane } from "@/components/ChatPane";
 import { Composer } from "@/components/Composer";
 import { PrivacyModal } from "@/components/PrivacyModal";
-import { LockScreen } from "@/components/LockScreen";
+import { ApiKeyModal } from "@/components/ApiKeyModal";
 import { DEFAULT_MODEL, DEFAULT_TONE, STORAGE_WARN_BYTES } from "@/lib/constants";
 import {
   loadStore, saveStore, newSession, getStorageBytes, exportSessions, parseImport,
 } from "@/lib/storage";
-import { getGateToken, clearGateToken } from "@/lib/gate";
-
-const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
+import { getApiKey } from "@/lib/apikey";
+import { streamChat } from "@/lib/openrouter";
 
 function toApiMessages(msgs) {
   return msgs.map((m) => {
@@ -39,7 +38,8 @@ function App() {
   const [privacyOpen, setPrivacyOpen] = useState(false);
   const [mobileSidebar, setMobileSidebar] = useState(false);
   const [storageBytes, setStorageBytes] = useState(getStorageBytes());
-  const [locked, setLocked] = useState(null); // null = checking, true = show lock, false = unlocked
+  const [apiKey, setApiKeyState] = useState(getApiKey());
+  const [keyModalOpen, setKeyModalOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(
     () => typeof window !== "undefined" && window.matchMedia("(max-width: 767px)").matches
   );
@@ -54,21 +54,9 @@ function App() {
     return () => mq.removeEventListener("change", handler);
   }, []);
 
-  // Check whether the password gate is enabled and whether we already hold a token.
+  // Prompt for the OpenRouter key on first load if none is set (backend-less BYO-key model).
   useEffect(() => {
-    let cancelled = false;
-    (async () => {
-      try {
-        const resp = await fetch(`${API}/auth/status`);
-        const data = await resp.json();
-        if (cancelled) return;
-        if (data.gate_enabled && !getGateToken()) setLocked(true);
-        else setLocked(false);
-      } catch {
-        if (!cancelled) setLocked(false); // fail open to avoid hard lockout on network hiccup
-      }
-    })();
-    return () => { cancelled = true; };
+    if (!getApiKey()) setKeyModalOpen(true);
   }, []);
 
   // Ensure there's always an active session on first load.
@@ -181,6 +169,11 @@ function App() {
 
   const handleSend = async (text, attachments) => {
     if (!active || streaming) return;
+    if (!getApiKey()) {
+      setKeyModalOpen(true);
+      toast.error("Add your OpenRouter API key first");
+      return;
+    }
     const userMsg = { id: "m_" + Date.now(), role: "user", text, attachments };
     const baseMessages = [...active.messages, userMsg];
     const title =
@@ -194,65 +187,24 @@ function App() {
 
     let acc = "";
     try {
-      const resp = await fetch(`${API}/chat/stream`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${getGateToken()}`,
+      await streamChat({
+        apiKey: getApiKey(),
+        model: active.model,
+        tone: active.tone,
+        messages: toApiMessages(baseMessages),
+        onToken: (delta) => {
+          acc += delta;
+          setStreamText(acc);
         },
-        body: JSON.stringify({
-          model: active.model,
-          tone: active.tone,
-          messages: toApiMessages(baseMessages),
-        }),
       });
 
-      if (resp.status === 401) {
-        clearGateToken();
-        setLocked(true);
-        throw new Error("Session expired — please unlock again.");
-      }
-      if (!resp.ok) {
-        const err = await resp.json().catch(() => ({}));
-        throw new Error(err.error || `Server error ${resp.status}`);
-      }
-
-      const reader = resp.body.getReader();
-      const decoder = new TextDecoder();
-      let buffer = "";
-
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
-        buffer += decoder.decode(value, { stream: true });
-        const lines = buffer.split("\n");
-        buffer = lines.pop() || "";
-        for (const line of lines) {
-          const t = line.trim();
-          if (!t.startsWith("data:")) continue;
-          const data = t.slice(5).trim();
-          if (data === "[DONE]") continue;
-          try {
-            const obj = JSON.parse(data);
-            if (obj.error) throw new Error(obj.error);
-            if (obj.content) {
-              acc += obj.content;
-              setStreamText(acc);
-            }
-          } catch (e) {
-            if (e.message && e.message !== "Unexpected end of JSON input") {
-              // surfaced below
-            }
-          }
-        }
-      }
-
-      if (!acc) throw new Error("No response received. Check the API key / model.");
+      if (!acc) throw new Error("No response received. Check your key / model.");
 
       const aiMsg = { id: "m_" + Date.now() + "_a", role: "assistant", text: acc };
       updateActive((s) => ({ ...s, messages: [...baseMessages, aiMsg] }));
     } catch (e) {
       toast.error("Generation failed", { description: e.message });
+      if (/API key/i.test(e.message)) setKeyModalOpen(true);
       if (acc) {
         const aiMsg = { id: "m_" + Date.now() + "_a", role: "assistant", text: acc };
         updateActive((s) => ({ ...s, messages: [...baseMessages, aiMsg] }));
@@ -262,13 +214,6 @@ function App() {
       setStreamText("");
     }
   };
-
-  if (locked === null) {
-    return <div className="fixed inset-0 bg-[#0A0A0B]" data-testid="gate-loading" />;
-  }
-  if (locked) {
-    return <LockScreen onUnlock={() => setLocked(false)} />;
-  }
 
   return (
     <div className="App flex h-[100dvh] bg-[#0A0A0B] overflow-hidden">
@@ -288,6 +233,7 @@ function App() {
           onExport={handleExport}
           onImport={handleImport}
           onOpenPrivacy={() => setPrivacyOpen(true)}
+          onOpenApiKey={() => setKeyModalOpen(true)}
         />
       )}
 
@@ -309,6 +255,7 @@ function App() {
               onExport={handleExport}
               onImport={handleImport}
               onOpenPrivacy={() => setPrivacyOpen(true)}
+              onOpenApiKey={() => setKeyModalOpen(true)}
             />
           </div>
         </div>
@@ -330,6 +277,11 @@ function App() {
       </main>
 
       <PrivacyModal open={privacyOpen} onOpenChange={setPrivacyOpen} />
+      <ApiKeyModal
+        open={keyModalOpen}
+        onOpenChange={setKeyModalOpen}
+        onSaved={(v) => setApiKeyState(v)}
+      />
       <Toaster theme="dark" position="top-center" />
     </div>
   );
