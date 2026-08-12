@@ -280,7 +280,7 @@ function App() {
 
         <ChatPane session={active} streaming={streaming} streamText={streamText} />
 
-        <Composer onSend={handleSend} disabled={streaming} tone={active?.tone || DEFAULT_TONE} characters={active?.characters || []} />
+        <Composer onSend={handleSend} disabled={streaming} tone={active?.tone || DEFAULT_TONE} characters={active?.characters || []} sessionId={active?.id} />
       </main>
 
       <PrivacyModal open={privacyOpen} onOpenChange={setPrivacyOpen} />

@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { Paperclip, ArrowUp, X, Loader2, UserRound } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -6,13 +6,21 @@ import { toast } from "sonner";
 import { readImageFile, extractVideoFrames } from "@/lib/media";
 import { TONES } from "@/lib/constants";
 
-export const Composer = ({ onSend, disabled, tone, characters = [] }) => {
+export const Composer = ({ onSend, disabled, tone, characters = [], sessionId }) => {
   const [text, setText] = useState("");
   const [attachments, setAttachments] = useState([]);
   const [processing, setProcessing] = useState(false);
   const [speaker, setSpeaker] = useState("");
   const fileRef = useRef(null);
   const taRef = useRef(null);
+
+  // Reset the "sending as" selection whenever the active chat changes (fresh chat = You).
+  useEffect(() => {
+    setSpeaker("");
+  }, [sessionId]);
+
+  // Ignore a stale speaker that isn't part of this chat's roster.
+  const effectiveSpeaker = characters.includes(speaker) ? speaker : "";
 
   const handleFiles = async (files) => {
     setProcessing(true);
@@ -40,7 +48,7 @@ export const Composer = ({ onSend, disabled, tone, characters = [] }) => {
   const submit = () => {
     if (disabled || processing) return;
     if (!text.trim() && attachments.length === 0) return;
-    onSend(text.trim(), attachments, speaker);
+    onSend(text.trim(), attachments, effectiveSpeaker);
     setText("");
     setAttachments([]);
     if (taRef.current) taRef.current.style.height = "auto";
@@ -136,7 +144,7 @@ export const Composer = ({ onSend, disabled, tone, characters = [] }) => {
               value={text}
               onChange={autoGrow}
               onKeyDown={onKeyDown}
-              placeholder={speaker ? `Write as ${speaker}…` : "Write your scene…"}
+              placeholder={effectiveSpeaker ? `Write as ${effectiveSpeaker}…` : "Write your scene…"}
               rows={1}
               className="flex-1 resize-none border-0 bg-transparent focus-visible:ring-0 text-[#EDEDED] placeholder:text-[#52525B] py-2 max-h-[200px] leading-relaxed text-base"
             />
