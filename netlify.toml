@@ -1,0 +1,10 @@
+[build]
+  base = "frontend"
+  command = "yarn build"
+  publish = "build"
+
+# Single-page app: send all routes to index.html
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
