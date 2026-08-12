@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { Lock, Sparkles, ImageIcon, Copy, Check, X, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { TONES } from "@/lib/constants";
+import { stripOptions } from "@/lib/cast";
 
 const AttachmentThumbs = ({ attachments, onOpen }) => {
   if (!attachments || attachments.length === 0) return null;
@@ -155,7 +156,11 @@ export const ChatPane = ({ session, streaming, streamText, onDeleteMessage }) =>
             )}
             <div className={`mt-0.5 flex items-center gap-3 ${m.role === "user" ? "justify-end" : ""}`}>
               {m.text && (
-                <CopyButton text={m.text} testid={`copy-${m.role}-${m.id}`} align="left" />
+                <CopyButton
+                  text={m.role === "assistant" ? stripOptions(m.text) : m.text}
+                  testid={`copy-${m.role}-${m.id}`}
+                  align="left"
+                />
               )}
               <button
                 data-testid={`delete-msg-${m.id}`}

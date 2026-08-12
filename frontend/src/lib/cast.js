@@ -1,3 +1,26 @@
+// Removes the trailing "3 continuation options" block from an AI reply for clean copying.
+export function stripOptions(text) {
+  if (!text) return text;
+  // Primary: the standard Sinhala options header used by the prompts.
+  const idx = text.search(/ඊළඟට\s*මොකද\s*වෙන්නේ/);
+  if (idx !== -1) return text.slice(0, idx).trimEnd();
+  // Fallback: strip a trailing numbered list (1. 2. 3.) plus an optional header line above it.
+  const lines = text.split("\n");
+  let cut = -1;
+  for (let i = lines.length - 1; i >= 0; i--) {
+    const ln = lines[i].trim();
+    if (ln === "") continue;
+    if (/^(\d+|[①-⑳])[.)、:]/.test(ln)) {
+      cut = i;
+    } else {
+      if (cut !== -1 && ln.length <= 70 && /[:?？]$/.test(ln)) cut = i;
+      break;
+    }
+  }
+  if (cut !== -1) return lines.slice(0, cut).join("\n").trimEnd();
+  return text.trimEnd();
+}
+
 // Generic role/pronoun words that are NOT real characters (English + Sinhala).
 const GENERIC = new Set(
   [

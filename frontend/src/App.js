@@ -14,7 +14,7 @@ import {
 } from "@/lib/storage";
 import { getApiKey } from "@/lib/apikey";
 import { streamChat } from "@/lib/openrouter";
-import { extractCast } from "@/lib/cast";
+import { extractCast, stripOptions } from "@/lib/cast";
 
 function toApiMessages(msgs) {
   return msgs.map((m) => {
@@ -158,7 +158,7 @@ function App() {
       toast.error("No AI responses to copy yet");
       return;
     }
-    const text = replies.map((m) => m.text).join("\n\n———\n\n");
+    const text = replies.map((m) => stripOptions(m.text)).join("\n\n———\n\n");
     try {
       await navigator.clipboard.writeText(text);
       toast.success(`Copied ${replies.length} AI response${replies.length > 1 ? "s" : ""}`);
