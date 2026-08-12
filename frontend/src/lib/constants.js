@@ -1,9 +1,9 @@
 export const MODELS = [
-  { id: "google/gemini-3.5-flash-lite", label: "Gemini 3.5 Flash Lite", hint: "Default · fastest, lightweight" },
+  { id: "google/gemini-3-flash-preview", label: "Gemini 3 Flash Preview", hint: "Default · newest, fast" },
+  { id: "google/gemini-3.5-flash-lite", label: "Gemini 3.5 Flash Lite", hint: "Fastest, lightweight" },
   { id: "google/gemini-2.5-flash", label: "Gemini 2.5 Flash", hint: "Recommended for image-heavy sessions" },
   { id: "google/gemini-2.5-pro", label: "Gemini 2.5 Pro", hint: "Recommended for image-heavy sessions" },
   { id: "google/gemini-3.1-pro-preview", label: "Gemini 3.1 Pro Preview", hint: "Preview · most capable" },
-  { id: "google/gemini-3-flash-preview", label: "Gemini 3 Flash Preview", hint: "Preview · fast" },
 ];
 
 export const DEFAULT_MODEL = MODELS[0].id;
