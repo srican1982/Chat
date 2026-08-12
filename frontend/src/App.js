@@ -143,7 +143,7 @@ function App() {
     toast.success("Session deleted from this browser");
   };
   const handleClearSession = () => {
-    updateActive((s) => ({ ...s, messages: [], title: "New Chat" }));
+    updateActive((s) => ({ ...s, messages: [], title: "New Chat", characters: [] }));
     toast.success("Session wiped");
   };
   const handleClearAll = () => {
