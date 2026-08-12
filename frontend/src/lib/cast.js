@@ -24,7 +24,7 @@ export function cleanRoster(list) {
 // Parses the hidden [[CAST: ...]] marker the storytelling prompts append.
 export function extractCast(text) {
   if (!text) return { clean: "", cast: [] };
-  const m = text.match(/\[\[CAST:([^\]]*)\]\]/i);
+  const m = text.match(/\[\[\s*CAST\s*:([^\]]*)\]\]/i);
   let cast = [];
   if (m) {
     const seen = new Set();
@@ -41,6 +41,6 @@ export function extractCast(text) {
       });
   }
   // Remove the marker (and any partial marker while streaming) from display text.
-  const clean = text.replace(/\[\[CAST[\s\S]*$/i, "").trimEnd();
+  const clean = text.replace(/\[\[\s*CAST[\s\S]*$/i, "").trimEnd();
   return { clean, cast };
 }
