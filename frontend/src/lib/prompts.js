@@ -2,16 +2,7 @@
 
 // Shared ending for storytelling tones: 3 next-step options + a hidden CAST marker the app parses.
 const CONTINUATION_ENDING =
-  "\n\nEND OF RESPONSE — ALWAYS PROVIDE 3 CONTINUATION OPTIONS:\n" +
-  "After finishing your main response, you MUST always end with exactly 3 continuation options " +
-  "specific to the scene, characters, conflict, or relationship that just happened (never generic). " +
-  "Each option should lead the next episode in a meaningfully different direction. Format exactly:\n" +
-  "ඊළඟට මොකද වෙන්නේ?\n" +
-  "1. [story-specific continuation option]\n" +
-  "2. [story-specific continuation option]\n" +
-  "3. [story-specific continuation option]\n" +
-  "Write all 3 options in natural Sinhala.\n" +
-  "Then, on ONE final line, list every named character who has appeared so far in this exact " +
+  "On ONE final line, list every named character who has appeared so far in this exact " +
   "machine-readable format (it is hidden from the reader, so never mention it): " +
   "[[CAST: name1, name2, name3]]. Use the names exactly as written in the story.";
 
