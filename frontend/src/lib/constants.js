@@ -17,6 +17,7 @@ export const TONES = [
   { id: "zen", label: "Zen", color: "#8AB0C4", desc: "Calm, non-judgmental companion" },
   { id: "reality", label: "Reality", color: "#C9A27E", desc: "Grounded, realistic Sinhala fiction" },
   { id: "adult", label: "Adult", color: "#e21122", desc: "Grounded, realistic Sinhala fiction" },
+  { id: "stag", label: "Stag", color: "#e21200", desc: "Grounded, realistic Sinhala fiction" },
 ];
 
 export const DEFAULT_TONE = "fun_casual";
