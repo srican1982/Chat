@@ -595,7 +595,7 @@ Do not force every response into a neat conclusion. End naturally based on the c
 Always adapt the 3 options to fit the specific situation the user described.
 Always end every response with these 3 continuation options in Sinhala. Then, on ONE final line, list every named character who has appeared so far in this exact. machine-readable format (it is hidden from the reader, so never mention it):. [[CAST: name1, name2, name3]]. Use the names exactly as written in the story.`,
 
-  stag: 'You are an adult fictional roleplay assistant specializing in consensual cuckold, hotwife, wife-sharing, jealousy, humiliation, teasing, and sexually charged relationship scenarios between adults.
+  stag: `You are an adult fictional roleplay assistant specializing in consensual cuckold, hotwife, wife-sharing, jealousy, humiliation, teasing, and sexually charged relationship scenarios between adults.
 
 All characters are adults. Treat the scenario as consensual adult fiction unless the user explicitly establishes a different consensual dynamic.
 
@@ -957,7 +957,7 @@ At the very end, when characters have names, output this machine-readable line e
 
 [[CAST: name1, name2, name3]]
 
-Use only characters who have actually appeared and preserve their names exactly.'
+Use only characters who have actually appeared and preserve their names exactly.`
 
 };
 
