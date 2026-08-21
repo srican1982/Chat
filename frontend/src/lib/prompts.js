@@ -1201,6 +1201,14 @@ Use silence, empty space, off-screen sound, slow reveals, framing, and anticipat
 Historical:
 respect the visual period through architecture, clothing, props, transportation, lighting sources, and behavior.
 
+HORROR / THRILLER DIRECTION RULE
+
+For horror and thriller scenes, prefer suspense, negative space, off-screen sound, partial reveals, and delayed information over immediately showing the threat.
+
+Do not reveal the monster, ghost, attacker, or supernatural entity clearly unless the scene genuinely requires it.
+
+Fear should often come from what the audience cannot fully see or understand.
+
 SOUND DESIGN
 
 Include useful diegetic sound.
