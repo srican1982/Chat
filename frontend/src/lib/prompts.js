@@ -1007,6 +1007,132 @@ Give each important character a recognizable personality, speaking rhythm, react
 
 Characters should react naturally to what just happened rather than behaving like they know the entire story.
 
+DIALOGUE PERFORMANCE / SPEAKING TONE
+
+For every important spoken line, indicate the emotional speaking tone and delivery when it helps the actor perform the scene.
+
+Do not use the same tone labels repeatedly.
+Choose the tone based on the exact emotional state of the character at that moment.
+
+Useful speaking-tone directions include:
+
+- calm
+- soft
+- nervous
+- hesitant
+- embarrassed
+- teasing
+- playful
+- sarcastic
+- angry
+- controlled anger
+- frightened
+- whispering
+- breathless
+- suspicious
+- emotionally hurt
+- disappointed
+- excited
+- confused
+- serious
+- cold
+- threatening
+- affectionate
+- flirtatious
+- shy
+- trembling
+- exhausted
+- crying but trying to stay composed
+- trying to hide fear
+- forcing a smile
+- pretending to be casual
+- speaking through clenched teeth
+- speaking very slowly
+- speaking quickly because of panic
+
+Write the performance direction before the dialogue.
+
+Example:
+
+අභිෂේක්: (හිනාව හිරකරගෙන, teasing tone එකකින්)
+"ඔහොම බැලුවට වැස්ස අඩුවෙන්නේ නැහැ ළමයෝ."
+
+ඉෂානි: (අහක බලාගෙන, ටිකක් irritated, short delivery)
+"මම බලන විදිහ මට ප්‍රශ්නයක් නැහැ."
+
+කවිඳු: (හුස්ම අඩු කරගෙන, බය හංගන්න උත්සාහ කරමින්)
+"කවුද... ඔතන?"
+
+නිමායා: (casual විදිහට පටන්ගෙන, අන්තිම වචන ටික deliberately teasing)
+"Performance තමයි වැදගත්."
+
+If the delivery changes inside one line, describe that too.
+
+Example:
+
+අංජලී: (මුලින් සන්සුන්ව, අන්තිම වාක්‍යයට එනකොට tone එක තද කරමින්)
+"මම ඔයාට warning එකක් දෙන්න ආවේ නෑ. ඒත් එයාගෙන් ඈත් වෙලා ඉන්න."
+
+Use pauses when useful:
+
+අවිශ්ක: (ගොත ගහමින්, වචන අතර පොඩි pauses)
+"මම... ඒ කියන්නේ... අද රෑටද?"
+
+Use silence as performance too.
+
+Example:
+
+ACTING / DIALOGUE NOTE:
+ඉෂානි වහාම reply කරන්නේ නැහැ.
+තත්පර දෙකක් අභිෂේක් දිහා බලාගෙන ඉඳලා, ඇස් අහකට ගන්නවා.
+
+Then:
+
+ඉෂානි: (ඉතාම මෘදු හඬින්)
+"තෑන්ක්ස්."
+
+Do not over-direct every single sentence.
+Simple dialogue can remain simple when the delivery is obvious from context.
+
+Add detailed speaking-tone direction especially when:
+- emotion changes
+- subtext matters
+- the character is lying
+- the character is hiding fear
+- romance or flirting depends on delivery
+- sarcasm could be misunderstood
+- anger is controlled rather than shouted
+- a line should be whispered
+- timing matters for comedy
+- the character pauses before saying something important
+
+For comedy, specify timing when useful.
+
+Example:
+
+කසුන්: (තත්පරයක් සහන් දිහා serious මූණකින් බලාගෙන, beat එකක් තියාගෙන)
+"මචං... උඹට දැන් group project එකක් නෙවෙයි. ජීවිත පරීක්ෂණයක්."
+
+For horror, dialogue should often become quieter rather than louder.
+
+Example:
+
+කවිඳු: (almost whispering, breath unsteady)
+"අම්මා...?"
+
+Do not make frightened characters constantly scream.
+Fear can be shown through broken speech, lowered volume, breath, pauses, or words failing to come out.
+
+The speaking direction should help an actor understand:
+- volume
+- speed
+- emotion
+- intention
+- subtext
+- pauses
+- whether eye contact is maintained
+- whether the character is trying to hide what they really feel
+
 CHARACTER CREATION
 
 If the user does not provide complete character details, create appropriate characters automatically.
