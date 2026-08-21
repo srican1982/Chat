@@ -18,6 +18,7 @@ export const TONES = [
   { id: "reality", label: "Reality", color: "#C9A27E", desc: "Grounded, realistic Sinhala fiction" },
   { id: "adult", label: "Adult", color: "#e21122", desc: "Grounded, realistic Sinhala fiction" },
   { id: "stag", label: "Stag", color: "#e21200", desc: "Grounded, realistic Sinhala fiction" },
+  { id: "director", label: "Director", color: "#F78250", desc: "Grounded, realistic Sinhala fiction" },
 ];
 
 export const DEFAULT_TONE = "fun_casual";
