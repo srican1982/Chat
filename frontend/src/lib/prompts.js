@@ -938,6 +938,411 @@ Do not make every story behave like a detective story.
 
 # DETECTIVE / MYSTERY / SHERLOCK-HOLMES-STYLE STORIES
 
+# EVIDENCE SPECIFICITY RULE
+
+A conclusion must never be more specific than the evidence allows.
+
+The amount of certainty and detail in a conclusion must match the amount of distinguishing evidence available.
+
+For example:
+
+WEAK EVIDENCE:
+
+"There is a salty smell on the envelope."
+
+This may reasonably suggest:
+
+* seawater
+* a dock
+* fishing equipment
+* preserved goods
+* a coastal environment
+* salt storage
+* something transported by sea
+
+It does NOT reasonably prove:
+
+"This came from the third salt warehouse beside the old London docks."
+
+To identify an exact place, person, profession, substance, or event, there must be additional distinguishing evidence.
+
+For example:
+
+salt
+
+* coal tar
+* a rare preserving chemical
+* a warehouse stamp
+* knowledge that only one London dock handles that chemical
+
+may justify a much narrower conclusion.
+
+Always ask silently:
+
+"What else could reasonably produce this same clue?"
+
+If several ordinary explanations are still possible, the character should not speak with certainty.
+
+Use language such as:
+
+"Possibly."
+
+"It suggests..."
+
+"That would be consistent with..."
+
+"I can't place it yet."
+
+"There are several possibilities."
+
+"This narrows it, but doesn't identify it."
+
+Only become confident after enough evidence eliminates the realistic alternatives.
+
+---
+
+# UNIQUE IDENTIFIER RULE
+
+Before allowing a character to identify an exact:
+
+* person
+* building
+* street
+* warehouse
+* organization
+* profession
+* weapon
+* chemical
+* vehicle
+* historical object
+* suspect
+
+from a clue, silently ask:
+
+"Does this clue contain something genuinely distinctive enough to identify that exact thing?"
+
+If not, keep the conclusion broader.
+
+BAD:
+
+Holmes smells salt.
+
+"This came from the old warehouse beside London Bridge."
+
+BETTER:
+
+Holmes smells the envelope.
+
+"Salt, certainly. But something else too."
+
+He smells it again.
+
+"Coal tar."
+
+Later he notices a faint violet residue on the paper.
+
+Only after checking another source:
+
+"Now we have something useful. Only two warehouses on this stretch of the Thames store material treated this way."
+
+The deduction becomes narrower as the evidence becomes narrower.
+
+---
+
+# DO NOT CONFUSE POSSIBILITY WITH PROOF
+
+Keep these four levels separate:
+
+OBSERVATION
+What the character directly sees, hears, smells, touches, or measures.
+
+POSSIBILITY
+One explanation that could fit the observation.
+
+WORKING THEORY
+An explanation supported by several connected facts.
+
+CONFIRMED CONCLUSION
+A theory that has survived checking and has enough evidence to rule out the important alternatives.
+
+Characters may move between these levels.
+
+Do not silently turn a possibility into a fact.
+
+---
+
+# EXCEPTIONAL INTELLIGENCE DOES NOT MEAN MAGIC
+
+Highly intelligent characters may:
+
+* notice more
+* remember obscure facts
+* connect details faster
+* recognize patterns others miss
+* test theories efficiently
+
+But they still need evidence.
+
+Their intelligence should appear in HOW they use evidence, not in knowing hidden information without evidence.
+
+A brilliant detective may reach the answer before everyone else.
+
+The reader should still be able to understand afterward why the answer was possible.
+
+The reaction should be:
+
+"I never noticed that."
+
+Not:
+
+"There was no way anyone could know that."
+
+---
+
+# KNOWLEDGE REQUIRES A REASON
+
+If a character recognizes a rare:
+
+* chemical
+* fabric
+* perfume
+* military insignia
+* dialect
+* disease
+* weapon
+* antique
+* plant
+* poison
+* industrial material
+
+there should be a believable reason that character knows it.
+
+The reason may come from:
+
+* profession
+* previous case
+* hobby
+* education
+* travel
+* military experience
+* specialist study
+* a previously established interest
+
+Do not explain the entire background every time.
+
+A small natural reference may be enough.
+
+Example:
+
+"I encountered the same resin during the Whitmore case."
+
+This gives the knowledge a source.
+
+---
+
+# PHYSICAL CLUES MUST SUPPORT THE INFERENCE
+
+Do not use vague physical evidence to justify a very precise reconstruction.
+
+BAD:
+
+There is a scratch on Watson's hand.
+
+"Someone grabbed you."
+
+BETTER:
+
+Holmes turns Watson's wrist toward the light.
+
+Three short curved scratches run parallel across the skin.
+
+"Fingernails," Holmes says. "Someone caught your wrist rather firmly."
+
+Now the physical evidence supports the inference.
+
+Whenever possible, show the distinguishing feature BEFORE the deduction.
+
+---
+
+# SHOW THE READER THE EVIDENCE
+
+Important deductions should usually be based on details that have already appeared on the page.
+
+Do not hide every necessary fact inside the detective's mind and reveal all of it only during the explanation.
+
+The reader does not need to understand the clue immediately.
+
+But the clue should usually exist before the conclusion.
+
+This creates:
+
+FAIR SURPRISE
+
+instead of:
+
+AUTHORIAL SURPRISE.
+
+FAIR SURPRISE:
+
+The reader saw the broken watch, unusual residue, and incorrect time but did not understand their relationship.
+
+Later the detective connects them.
+
+AUTHORIAL SURPRISE:
+
+The detective announces that there was a rare chemical on the watch even though the story never mentioned anything unusual about it before.
+
+Prefer fair surprise.
+
+---
+
+# COINCIDENCE CONTROL
+
+Coincidences may begin a story.
+
+Coincidences should not repeatedly solve the story.
+
+When two important events happen close together, ask whether there is a believable reason for the timing.
+
+For example:
+
+Watson discovers a mysterious patient.
+
+Thirty seconds later the patient's brother randomly arrives at Baker Street.
+
+This may feel arranged by the writer.
+
+Possible improvements:
+
+* the brother was already searching for Holmes
+* the hospital told him Watson had taken the envelope
+* he followed a clue to Baker Street
+* he had been waiting downstairs
+* Holmes had previously sent for him
+* both events were deliberately caused by the same antagonist
+
+A coincidence becomes more believable when later information explains why the events overlapped.
+
+Avoid repeatedly using:
+
+"At that exact moment..."
+
+"Just then..."
+
+"Suddenly the exact person they needed arrived..."
+
+unless the timing itself has a reason.
+
+---
+
+# CONVENIENCE CHECK
+
+Before introducing:
+
+* a new visitor
+* a phone call
+* a letter
+* a clue
+* a witness
+* a weapon
+* a vehicle
+* an expert
+* a confession
+* a sudden memory
+
+ask silently:
+
+"Is this appearing because this is when it would realistically appear, or because the story needs it right now?"
+
+If it exists only for plot convenience, create a cause for its arrival.
+
+---
+
+# SPECIFIC HOOK RULE
+
+Do not end scenes with only a vague reaction such as:
+
+"His expression changed."
+
+"She froze."
+
+"Something was wrong."
+
+"He suddenly understood."
+
+These can be used, but the scene should usually give the reader one concrete reason to be curious.
+
+BAD:
+
+Holmes examined the watch.
+
+His expression changed.
+
+BETTER:
+
+Holmes opened the back of the watch.
+
+His thumb stopped against the winding mechanism.
+
+"Watson..."
+
+He looked up.
+
+"This watch didn't stop on the bridge."
+
+The reader now has a specific unanswered question.
+
+A strong hook should reveal:
+
+SOMETHING CONCRETE
+
+while withholding:
+
+THE FULL EXPLANATION.
+
+---
+
+# DO NOT OVER-CORRECT
+
+Realistic reasoning does not mean every discovery must take a long time.
+
+A skilled character may make simple deductions immediately when the evidence is genuinely strong.
+
+Example:
+
+A person enters soaking wet while heavy rain is falling outside.
+
+The character does not need a five-step investigation to infer that they were recently outside.
+
+Use longer reasoning chains only when the conclusion is:
+
+* surprising
+* highly specific
+* important to the plot
+* difficult to infer
+* dependent on hidden events
+
+Match the amount of reasoning to the difficulty of the conclusion.
+
+---
+
+# FINAL DEDUCTION CHECK
+
+Before writing any impressive deduction, silently ask:
+
+1. What exactly was observed?
+2. What ordinary explanations could also fit?
+3. What makes this clue distinctive?
+4. Does the conclusion contain more detail than the evidence supports?
+5. How does this character know the specialist information involved?
+6. Has the reader already been shown the important evidence?
+7. Is this a possibility, theory, or proven conclusion?
+8. What additional fact rules out the main alternatives?
+9. Is the character clever because of reasoning, or merely because the writer gave them the answer?
+
+If the answer to question 9 is "the writer gave them the answer," rewrite the deduction.
+
+
 A detective may be exceptionally intelligent.
 
 That does not mean they have magical knowledge.
